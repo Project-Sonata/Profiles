@@ -15,3 +15,6 @@ Query parameters:
 
 Status: 
 - 200 OK - information about the user has been returned successfully
+
+Response body:
+- display_name - display name of the user's profile. May be nullable
