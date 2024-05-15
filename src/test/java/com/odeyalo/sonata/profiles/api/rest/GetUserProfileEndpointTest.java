@@ -57,6 +57,16 @@ class GetUserProfileEndpointTest {
         assertThat(responseBody.getId()).isEqualTo(EXISTING_USER_ID);
     }
 
+    @Test
+    void shouldReturnContextUriOfTheUser() {
+        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+
+        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.getContextUri()).isEqualTo("sonata:user:miku");
+    }
+
     private WebTestClient.ResponseSpec fetchExistingUserProfile() {
         return webTestClient.get()
                 .uri("/users/" + EXISTING_USER_ID)

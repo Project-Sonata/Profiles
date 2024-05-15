@@ -19,6 +19,7 @@ public final class ProfileController {
                 ResponseEntity.ok(
                         UserProfileDto.builder()
                                 .id(userId)
+                                .contextUri("sonata:user:miku")
                                 .displayName("odeyalo")
                                 .email("odeyalo@gmail.com")
                                 .build()

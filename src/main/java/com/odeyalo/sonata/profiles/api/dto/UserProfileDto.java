@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Value
-@AllArgsConstructor(onConstructor_= {@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)})
+@AllArgsConstructor(onConstructor_ = {@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)})
 @Builder
 public class UserProfileDto {
     @NotNull
@@ -19,4 +19,7 @@ public class UserProfileDto {
     String displayName;
     @NotNull
     String email;
+    @NotNull
+    @JsonProperty("context_uri")
+    String contextUri;
 }

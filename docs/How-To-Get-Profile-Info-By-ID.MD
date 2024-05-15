@@ -18,5 +18,6 @@ Status:
 
 Response body:
 - id - the user's id, equal to provided in query parameter
+- context_uri - the user's context uri, in the format: sonata:user: + the user's id
 - display_name - display name of the user's profile. May be nullable
 - email - user's email. The email is verified 
