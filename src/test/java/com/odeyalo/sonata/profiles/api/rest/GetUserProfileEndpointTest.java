@@ -24,81 +24,91 @@ class GetUserProfileEndpointTest {
 
     final String EXISTING_USER_ID = "miku";
 
-    @Test
-    void shouldReturn200OkStatus() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class FetchExistingUserProfile {
 
-        responseSpec.expectStatus().isOk();
-    }
 
-    @Test
-    void shouldReturnDisplayNameOfTheUser() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+        @Test
+        void shouldReturn200OkStatus() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            responseSpec.expectStatus().isOk();
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getDisplayName()).isEqualTo("odeyalo");
-    }
+        @Test
+        void shouldReturnDisplayNameOfTheUser() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-    @Test
-    void shouldReturnEmailOfTheUser() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getDisplayName()).isEqualTo("odeyalo");
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getEmail()).isEqualTo("odeyalo@gmail.com");
-    }
+        @Test
+        void shouldReturnEmailOfTheUser() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-    @Test
-    void shouldReturnIdSameToProvided() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getEmail()).isEqualTo("odeyalo@gmail.com");
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getId()).isEqualTo(EXISTING_USER_ID);
-    }
+        @Test
+        void shouldReturnIdSameToProvided() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-    @Test
-    void shouldReturnContextUriOfTheUser() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getId()).isEqualTo(EXISTING_USER_ID);
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getContextUri()).isEqualTo("sonata:user:miku");
-    }
+        @Test
+        void shouldReturnContextUriOfTheUser() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-    @Test
-    void shouldReturnBirthdateOfTheUser() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getContextUri()).isEqualTo("sonata:user:miku");
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getBirthdate()).isEqualTo("2004-05-22");
-    }
+        @Test
+        void shouldReturnBirthdateOfTheUser() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-    @Test
-    void shouldReturnGenderOfTheUser() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getBirthdate()).isEqualTo("2004-05-22");
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getGender()).isEqualTo(FEMALE);
-    }
+        @Test
+        void shouldReturnGenderOfTheUser() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
 
-    @Test
-    void shouldReturnCountryCodeOfTheUser() {
-        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
 
-        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getGender()).isEqualTo(FEMALE);
+        }
 
-        assertThat(responseBody).isNotNull();
-        assertThat(responseBody.getCountryCode()).isEqualTo("JP");
+        @Test
+        void shouldReturnCountryCodeOfTheUser() {
+            final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+
+            final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+
+            assertThat(responseBody).isNotNull();
+            assertThat(responseBody.getCountryCode()).isEqualTo("JP");
+        }
+
+        private WebTestClient.ResponseSpec fetchExistingUserProfile() {
+            return sendFetchUserProfileRequest(EXISTING_USER_ID);
+        }
     }
 
     @Nested
@@ -108,7 +118,7 @@ class GetUserProfileEndpointTest {
 
         @Test
         void shouldReturnNoContent() {
-            WebTestClient.ResponseSpec responseSpec = fetchNotExistingUserProfile();
+            final WebTestClient.ResponseSpec responseSpec = fetchNotExistingUserProfile();
 
             responseSpec.expectStatus().isNoContent();
         }
@@ -116,10 +126,6 @@ class GetUserProfileEndpointTest {
         private WebTestClient.ResponseSpec fetchNotExistingUserProfile() {
             return sendFetchUserProfileRequest(NOT_EXISTING_USER_ID);
         }
-    }
-
-    private WebTestClient.ResponseSpec fetchExistingUserProfile() {
-        return sendFetchUserProfileRequest(EXISTING_USER_ID);
     }
 
     @NotNull
