@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Value
@@ -14,4 +15,6 @@ public class UserProfileDto {
     @Nullable
     @JsonProperty("display_name")
     String displayName;
+    @NotNull
+    String email;
 }

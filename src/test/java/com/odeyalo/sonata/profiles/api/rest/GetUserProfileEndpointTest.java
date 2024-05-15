@@ -37,6 +37,16 @@ class GetUserProfileEndpointTest {
         assertThat(responseBody.getDisplayName()).isEqualTo("odeyalo");
     }
 
+    @Test
+    void shouldReturnEmailOfTheUser() {
+        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+
+        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.getEmail()).isEqualTo("odeyalo@gmail.com");
+    }
+
     private WebTestClient.ResponseSpec fetchExistingUserProfile() {
         return webTestClient.get()
                 .uri("/users/" + EXISTING_USER_ID)

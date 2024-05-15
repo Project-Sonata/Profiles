@@ -18,3 +18,4 @@ Status:
 
 Response body:
 - display_name - display name of the user's profile. May be nullable
+- email - user's email. The email is verified 

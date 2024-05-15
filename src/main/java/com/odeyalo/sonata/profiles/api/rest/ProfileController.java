@@ -19,6 +19,7 @@ public final class ProfileController {
                 ResponseEntity.ok(
                         UserProfileDto.builder()
                                 .displayName("odeyalo")
+                                .email("odeyalo@gmail.com")
                                 .build()
                 )
         );
