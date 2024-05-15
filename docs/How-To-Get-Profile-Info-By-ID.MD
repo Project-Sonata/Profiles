@@ -15,6 +15,7 @@ Query parameters:
 
 Status: 
 - 200 OK - information about the user has been returned successfully
+- 204 No Content - if user by provided ID does not exist
 
 Response body:
 - id - the user's id, equal to provided in query parameter

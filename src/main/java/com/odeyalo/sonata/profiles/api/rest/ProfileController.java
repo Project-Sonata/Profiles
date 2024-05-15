@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/users")
@@ -19,6 +20,13 @@ public final class ProfileController {
 
     @GetMapping("/{user_id}")
     public Mono<ResponseEntity<UserProfileDto>> fetchUserProfileById(@PathVariable("user_id") final String userId) {
+
+        if ( Objects.equals(userId, "not_exist") ) {
+            return Mono.just(
+                    ResponseEntity.noContent().build()
+            );
+        }
+
         return Mono.just(
                 ResponseEntity.ok(
                         UserProfileDto.builder()

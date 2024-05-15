@@ -1,7 +1,10 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -98,9 +101,31 @@ class GetUserProfileEndpointTest {
         assertThat(responseBody.getCountryCode()).isEqualTo("JP");
     }
 
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class FetchNotExistingProfile {
+        final String NOT_EXISTING_USER_ID = "not_exist";
+
+        @Test
+        void shouldReturnNoContent() {
+            WebTestClient.ResponseSpec responseSpec = fetchNotExistingUserProfile();
+
+            responseSpec.expectStatus().isNoContent();
+        }
+
+        private WebTestClient.ResponseSpec fetchNotExistingUserProfile() {
+            return sendFetchUserProfileRequest(NOT_EXISTING_USER_ID);
+        }
+    }
+
     private WebTestClient.ResponseSpec fetchExistingUserProfile() {
+        return sendFetchUserProfileRequest(EXISTING_USER_ID);
+    }
+
+    @NotNull
+    private WebTestClient.ResponseSpec sendFetchUserProfileRequest(final String userId) {
         return webTestClient.get()
-                .uri("/users/" + EXISTING_USER_ID)
+                .uri("/users/" + userId)
                 .exchange();
     }
 }
