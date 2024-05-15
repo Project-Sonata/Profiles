@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 @AllArgsConstructor(onConstructor_= {@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)})
 @Builder
 public class UserProfileDto {
+    @NotNull
+    String id;
     @Nullable
     @JsonProperty("display_name")
     String displayName;

@@ -18,6 +18,7 @@ public final class ProfileController {
         return Mono.just(
                 ResponseEntity.ok(
                         UserProfileDto.builder()
+                                .id(userId)
                                 .displayName("odeyalo")
                                 .email("odeyalo@gmail.com")
                                 .build()
