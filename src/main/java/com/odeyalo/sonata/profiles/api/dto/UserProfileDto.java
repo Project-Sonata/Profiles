@@ -1,12 +1,15 @@
 package com.odeyalo.sonata.profiles.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.time.LocalDate;
 
 @Value
 @AllArgsConstructor(onConstructor_ = {@JsonCreator(mode = JsonCreator.Mode.PROPERTIES)})
@@ -22,4 +25,7 @@ public class UserProfileDto {
     @NotNull
     @JsonProperty("context_uri")
     String contextUri;
+    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    LocalDate birthdate;
 }

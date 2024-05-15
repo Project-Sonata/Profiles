@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 @RestController
 @RequestMapping("/users")
 public final class ProfileController {
@@ -22,6 +25,7 @@ public final class ProfileController {
                                 .contextUri("sonata:user:miku")
                                 .displayName("odeyalo")
                                 .email("odeyalo@gmail.com")
+                                .birthdate(LocalDate.of(2004, Month.MAY, 22))
                                 .build()
                 )
         );

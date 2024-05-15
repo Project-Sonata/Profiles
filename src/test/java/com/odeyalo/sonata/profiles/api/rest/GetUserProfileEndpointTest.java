@@ -67,6 +67,16 @@ class GetUserProfileEndpointTest {
         assertThat(responseBody.getContextUri()).isEqualTo("sonata:user:miku");
     }
 
+    @Test
+    void shouldReturnBirthdateOfTheUser() {
+        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+
+        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.getBirthdate()).isEqualTo("2004-05-22");
+    }
+
     private WebTestClient.ResponseSpec fetchExistingUserProfile() {
         return webTestClient.get()
                 .uri("/users/" + EXISTING_USER_ID)
