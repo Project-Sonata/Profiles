@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.odeyalo.sonata.profiles.model.Gender.FEMALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -75,6 +76,16 @@ class GetUserProfileEndpointTest {
 
         assertThat(responseBody).isNotNull();
         assertThat(responseBody.getBirthdate()).isEqualTo("2004-05-22");
+    }
+
+    @Test
+    void shouldReturnGenderOfTheUser() {
+        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+
+        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.getGender()).isEqualTo(FEMALE);
     }
 
     private WebTestClient.ResponseSpec fetchExistingUserProfile() {

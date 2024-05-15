@@ -1,6 +1,7 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import com.odeyalo.sonata.profiles.model.Gender;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public final class ProfileController {
                                 .displayName("odeyalo")
                                 .email("odeyalo@gmail.com")
                                 .birthdate(LocalDate.of(2004, Month.MAY, 22))
+                                .gender(Gender.FEMALE)
                                 .build()
                 )
         );
