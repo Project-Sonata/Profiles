@@ -88,6 +88,16 @@ class GetUserProfileEndpointTest {
         assertThat(responseBody.getGender()).isEqualTo(FEMALE);
     }
 
+    @Test
+    void shouldReturnCountryCodeOfTheUser() {
+        final WebTestClient.ResponseSpec responseSpec = fetchExistingUserProfile();
+
+        final UserProfileDto responseBody = responseSpec.expectBody(UserProfileDto.class).returnResult().getResponseBody();
+
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.getCountryCode()).isEqualTo("JP");
+    }
+
     private WebTestClient.ResponseSpec fetchExistingUserProfile() {
         return webTestClient.get()
                 .uri("/users/" + EXISTING_USER_ID)

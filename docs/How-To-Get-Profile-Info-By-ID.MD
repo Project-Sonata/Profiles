@@ -22,4 +22,5 @@ Response body:
 - display_name - display name of the user's profile. May be nullable
 - email - the user's email. The email is verified 
 - birthdate - the user's birthdate, in format yyyy-MM-dd. 
-- gender-  the user's gender, one of: MALE, FEMALE, NONE
+- gender - the user's gender, one of: MALE, FEMALE, NONE
+- country - country code where the user was signed up. May be null

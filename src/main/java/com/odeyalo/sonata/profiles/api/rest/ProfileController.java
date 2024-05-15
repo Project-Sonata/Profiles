@@ -28,6 +28,7 @@ public final class ProfileController {
                                 .email("odeyalo@gmail.com")
                                 .birthdate(LocalDate.of(2004, Month.MAY, 22))
                                 .gender(Gender.FEMALE)
+                                .countryCode("JP")
                                 .build()
                 )
         );

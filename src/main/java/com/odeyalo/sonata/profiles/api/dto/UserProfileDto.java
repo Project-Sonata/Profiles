@@ -31,4 +31,7 @@ public class UserProfileDto {
     LocalDate birthdate;
     @NotNull
     Gender gender;
+    @Nullable
+    @JsonProperty("country")
+    String countryCode;
 }
