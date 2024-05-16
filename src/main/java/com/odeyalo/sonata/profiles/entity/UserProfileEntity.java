@@ -24,4 +24,7 @@ public class UserProfileEntity {
     @Column("display_name")
     @NotNull
     String displayName;
+    @Column("email")
+    @NotNull
+    String email;
 }
