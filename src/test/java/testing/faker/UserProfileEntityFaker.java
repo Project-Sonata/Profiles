@@ -11,7 +11,8 @@ public final class UserProfileEntityFaker {
     public UserProfileEntityFaker() {
         builder
                 .id(faker.random().nextLong(Long.MAX_VALUE))
-                .publicId(RandomStringUtils.randomAlphanumeric(22));
+                .publicId(RandomStringUtils.randomAlphanumeric(22))
+                .displayName(faker.name().username());
     }
 
     public static UserProfileEntityFaker create() {
@@ -25,6 +26,11 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntityFaker withPublicId(final String publicId) {
         builder.publicId(publicId);
+        return this;
+    }
+
+    public UserProfileEntityFaker withDisplayName(final String displayName) {
+        builder.displayName(displayName);
         return this;
     }
 

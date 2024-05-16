@@ -24,7 +24,7 @@ class R2dbcProfileRepositoryTest {
     }
 
     @Test
-    void shouldReturnIdOfTheUser() {
+    void shouldReturnPublicIdOfTheUser() {
         final var userProfile = UserProfileEntityFaker.create()
                 .eraseId()
                 .withPublicId("miku")
@@ -36,6 +36,23 @@ class R2dbcProfileRepositoryTest {
         testable.findById(saved.getId())
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getPublicId()).isEqualTo("miku"))
+                .verifyComplete();
+
+    }
+
+    @Test
+    void shouldReturnDisplayNameOfTheUser() {
+        final var userProfile = UserProfileEntityFaker.create()
+                .eraseId()
+                .withDisplayName("miku_nakano")
+                .get();
+
+        final UserProfileEntity saved = testable.save(userProfile).block();
+
+        //noinspection DataFlowIssue there is no way that after save ID will be null
+        testable.findById(saved.getId())
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getDisplayName()).isEqualTo("miku_nakano"))
                 .verifyComplete();
 
     }
