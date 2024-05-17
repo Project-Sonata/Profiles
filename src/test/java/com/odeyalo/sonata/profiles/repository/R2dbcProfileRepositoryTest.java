@@ -1,10 +1,15 @@
 package com.odeyalo.sonata.profiles.repository;
 
+import com.odeyalo.sonata.profiles.config.persistance.r2dbc.R2dbcConfiguration;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.model.Gender;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileEntityFaker;
@@ -16,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataR2dbcTest
 @ActiveProfiles("test")
+@Import(R2dbcConfiguration.class)
 class R2dbcProfileRepositoryTest {
 
     @Autowired
@@ -102,6 +108,23 @@ class R2dbcProfileRepositoryTest {
         testable.findById(saved.getId())
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2003-05-02"))
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = Gender.class)
+    void shouldReturnGenderOfTheUser(final Gender gender) {
+        final var userProfile = UserProfileEntityFaker.create()
+                .eraseId()
+                .withGender(gender)
+                .get();
+
+        final UserProfileEntity saved = testable.save(userProfile).block();
+
+        //noinspection DataFlowIssue there is no way that after save ID will be null
+        testable.findById(saved.getId())
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getGender()).isEqualTo(gender))
                 .verifyComplete();
     }
 }

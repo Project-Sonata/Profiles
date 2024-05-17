@@ -2,6 +2,7 @@ package testing.faker;
 
 import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.model.Gender;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
@@ -23,7 +24,8 @@ public final class UserProfileEntityFaker {
                 .publicId(RandomStringUtils.randomAlphanumeric(22))
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
-                .birthdate(birthdate);
+                .birthdate(birthdate)
+                .gender(faker.options().option(Gender.class));
     }
 
     public static UserProfileEntityFaker create() {
@@ -61,6 +63,11 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntityFaker withBirthdate(final LocalDate birthdate) {
         builder.birthdate(birthdate);
+        return this;
+    }
+
+    public UserProfileEntityFaker withGender(final Gender gender) {
+        builder.gender(gender);
         return this;
     }
 }

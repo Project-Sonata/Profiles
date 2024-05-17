@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.entity;
 
+import com.odeyalo.sonata.profiles.model.Gender;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
@@ -37,4 +38,7 @@ public class UserProfileEntity {
     @Column("birthdate")
     @NotNull
     LocalDate birthdate;
+    @Column("gender")
+    @NotNull
+    Gender gender;
 }
