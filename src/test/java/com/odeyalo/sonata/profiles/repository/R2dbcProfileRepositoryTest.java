@@ -9,6 +9,9 @@ import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileEntityFaker;
 
+import java.time.LocalDate;
+
+import static java.time.Month.MAY;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataR2dbcTest
@@ -83,6 +86,22 @@ class R2dbcProfileRepositoryTest {
         testable.findById(saved.getId())
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getCountry()).isEqualTo("JP"))
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnBirthdateOfTheUser() {
+        final var userProfile = UserProfileEntityFaker.create()
+                .eraseId()
+                .withBirthdate(LocalDate.of(2003, MAY, 2))
+                .get();
+
+        final UserProfileEntity saved = testable.save(userProfile).block();
+
+        //noinspection DataFlowIssue there is no way that after save ID will be null
+        testable.findById(saved.getId())
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2003-05-02"))
                 .verifyComplete();
     }
 }

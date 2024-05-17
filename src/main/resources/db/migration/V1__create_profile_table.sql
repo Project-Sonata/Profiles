@@ -4,5 +4,6 @@ CREATE TABLE profiles
     public_id VARCHAR(22) NOT NULL UNIQUE,
     display_name VARCHAR(50),
     email VARCHAR(100) NOT NULL UNIQUE,
-    country VARCHAR(15) NOT NULL
+    country VARCHAR(15) NOT NULL,
+    birthdate DATE NOT NULL
 );

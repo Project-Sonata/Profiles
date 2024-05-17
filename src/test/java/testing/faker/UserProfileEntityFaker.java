@@ -4,17 +4,26 @@ import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 public final class UserProfileEntityFaker {
     private final UserProfileEntity.UserProfileEntityBuilder builder = UserProfileEntity.builder();
     private final Faker faker = Faker.instance();
 
     public UserProfileEntityFaker() {
+        final LocalDate birthdate = faker.date().birthday(18, 70)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
         builder
                 .id(faker.random().nextLong(Long.MAX_VALUE))
                 .email(faker.internet().emailAddress())
                 .publicId(RandomStringUtils.randomAlphanumeric(22))
                 .displayName(faker.name().username())
-                .country(faker.country().countryCode2());
+                .country(faker.country().countryCode2())
+                .birthdate(birthdate);
     }
 
     public static UserProfileEntityFaker create() {
@@ -47,6 +56,11 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntityFaker withCountry(final String country) {
         builder.country(country);
+        return this;
+    }
+
+    public UserProfileEntityFaker withBirthdate(final LocalDate birthdate) {
+        builder.birthdate(birthdate);
         return this;
     }
 }
