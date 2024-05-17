@@ -27,4 +27,9 @@ public class UserProfileEntity {
     @Column("email")
     @NotNull
     String email;
+    // ENHANCE: Not sure about moving it to separated class called Country. I don't want to introduce additional complexity to code
+    // ENHANCE: Any way if there is any need it will be easily decoupled
+    @Column("country")
+    @NotNull
+    String country;
 }

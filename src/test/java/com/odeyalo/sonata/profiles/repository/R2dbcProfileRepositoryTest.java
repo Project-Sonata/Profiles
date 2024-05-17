@@ -70,4 +70,19 @@ class R2dbcProfileRepositoryTest {
                 .assertNext(it -> assertThat(it.getEmail()).isEqualTo("miku@gmail.com"))
                 .verifyComplete();
     }
+    @Test
+    void shouldReturnCountryOfTheUser() {
+        final var userProfile = UserProfileEntityFaker.create()
+                .eraseId()
+                .withCountry("JP")
+                .get();
+
+        final UserProfileEntity saved = testable.save(userProfile).block();
+
+        //noinspection DataFlowIssue there is no way that after save ID will be null
+        testable.findById(saved.getId())
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getCountry()).isEqualTo("JP"))
+                .verifyComplete();
+    }
 }

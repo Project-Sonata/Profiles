@@ -13,7 +13,8 @@ public final class UserProfileEntityFaker {
                 .id(faker.random().nextLong(Long.MAX_VALUE))
                 .email(faker.internet().emailAddress())
                 .publicId(RandomStringUtils.randomAlphanumeric(22))
-                .displayName(faker.name().username());
+                .displayName(faker.name().username())
+                .country(faker.country().countryCode2());
     }
 
     public static UserProfileEntityFaker create() {
@@ -42,5 +43,10 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntity get() {
         return builder.build();
+    }
+
+    public UserProfileEntityFaker withCountry(final String country) {
+        builder.country(country);
+        return this;
     }
 }
