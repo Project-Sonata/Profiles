@@ -41,4 +41,7 @@ public class UserProfileEntity {
     @Column("gender")
     @NotNull
     Gender gender;
+    @Column("context_uri")
+    @NotNull
+    String contextUri;
 }

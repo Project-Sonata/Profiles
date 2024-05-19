@@ -144,4 +144,22 @@ class R2dbcProfileRepositoryTest {
                 .expectNext(saved)
                 .verifyComplete();
     }
+
+
+    @Test
+    void shouldReturnContextUriOfTheProfile() {
+        final var userProfile = UserProfileEntityFaker.create()
+                .eraseId()
+                .withContextUri("sonata:user:miku")
+                .get();
+
+        final UserProfileEntity saved = testable.save(userProfile).block();
+
+        //noinspection DataFlowIssue there is no way that after save ID will be null
+        testable.findById(saved.getId())
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
+                .verifyComplete();
+    }
+
 }

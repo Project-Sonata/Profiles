@@ -46,6 +46,7 @@ class GetUserProfileEndpointTest {
                     .country("JP")
                     .displayName("odeyalo")
                     .email("odeyalo@gmail.com")
+                    .contextUri("sonata:user:miku")
                     .build();
             // ENHANCE: good candidate for refactoring
             profileRepository.save(profile).block();

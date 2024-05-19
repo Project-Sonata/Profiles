@@ -17,15 +17,17 @@ public final class UserProfileEntityFaker {
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
+        final String publicId = RandomStringUtils.randomAlphanumeric(22);
 
         builder
                 .id(faker.random().nextLong(Long.MAX_VALUE))
                 .email(faker.internet().emailAddress())
-                .publicId(RandomStringUtils.randomAlphanumeric(22))
+                .publicId(publicId)
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
                 .birthdate(birthdate)
-                .gender(faker.options().option(Gender.class));
+                .gender(faker.options().option(Gender.class))
+                .contextUri("sonata:user:" + publicId);
     }
 
     public static UserProfileEntityFaker create() {
@@ -39,6 +41,8 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntityFaker withPublicId(final String publicId) {
         builder.publicId(publicId);
+        // Override the context URI because it must be the same
+        builder.contextUri("sonata:user:" + publicId);
         return this;
     }
 
@@ -68,6 +72,11 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntityFaker withGender(final Gender gender) {
         builder.gender(gender);
+        return this;
+    }
+
+    public UserProfileEntityFaker withContextUri(final String contextUri) {
+        builder.contextUri(contextUri);
         return this;
     }
 }

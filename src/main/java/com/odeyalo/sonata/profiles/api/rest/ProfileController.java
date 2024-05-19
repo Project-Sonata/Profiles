@@ -23,7 +23,7 @@ public final class ProfileController {
         return r2dbcProfileRepository.findByPublicId(userId)
                 .map(it -> UserProfileDto.builder()
                         .id(userId)
-                        .contextUri("sonata:user:" + userId)
+                        .contextUri(it.getContextUri())
                         .displayName(it.getDisplayName())
                         .email(it.getEmail())
                         .birthdate(it.getBirthdate())
