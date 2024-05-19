@@ -1,15 +1,18 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.repository.R2dbcProfileRepository;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.time.LocalDate;
+import java.time.Month;
 
 import static com.odeyalo.sonata.profiles.model.Gender.FEMALE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,12 +25,37 @@ class GetUserProfileEndpointTest {
     @Autowired
     WebTestClient webTestClient;
 
-    final String EXISTING_USER_ID = "miku";
+    /**
+     * ENHANCE: THERE IS A DATA LAYER IN INTEGRATION TEST FOR WEB. I THINK IT'S A BAD PRACTICE. SHOULD CHANGE IT BUT HOW?
+     */
+    @Autowired
+    R2dbcProfileRepository profileRepository;
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class FetchExistingUserProfile {
 
+        final String EXISTING_USER_ID = "miku";
+
+        @BeforeEach
+        void setUp() {
+            final UserProfileEntity profile = UserProfileEntity.builder()
+                    .publicId(EXISTING_USER_ID)
+                    .gender(FEMALE)
+                    .birthdate(LocalDate.of(2004, Month.MAY, 22))
+                    .country("JP")
+                    .displayName("odeyalo")
+                    .email("odeyalo@gmail.com")
+                    .contextUri("sonata:user:miku")
+                    .build();
+            // ENHANCE: good candidate for refactoring
+            profileRepository.save(profile).block();
+        }
+
+        @AfterEach
+        void tearDown() {
+            profileRepository.deleteAll().block();
+        }
 
         @Test
         void shouldReturn200OkStatus() {
