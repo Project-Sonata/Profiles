@@ -127,4 +127,21 @@ class R2dbcProfileRepositoryTest {
                 .assertNext(it -> assertThat(it.getGender()).isEqualTo(gender))
                 .verifyComplete();
     }
+
+    @Test
+    void shouldFindProfileByPublicId() {
+        final var userProfile = UserProfileEntityFaker.create()
+                .eraseId()
+                .withPublicId("miku")
+                .get();
+
+        final UserProfileEntity saved = testable.save(userProfile).block();
+
+        //noinspection DataFlowIssue
+        testable.findByPublicId("miku")
+                .as(StepVerifier::create)
+                // assert that the next element is same as saved in database
+                .expectNext(saved)
+                .verifyComplete();
+    }
 }
