@@ -2,7 +2,7 @@ package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
-import com.odeyalo.sonata.profiles.repository.R2dbcProfileRepository;
+import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class GetUserProfileEndpointTest {
      * ENHANCE: THERE IS A DATA LAYER IN INTEGRATION TEST FOR WEB. I THINK IT'S A BAD PRACTICE. SHOULD CHANGE IT BUT HOW?
      */
     @Autowired
-    R2dbcProfileRepository profileRepository;
+    UserProfileRepository profileRepository;
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)

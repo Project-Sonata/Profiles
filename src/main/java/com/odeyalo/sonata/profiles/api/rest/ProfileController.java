@@ -1,7 +1,7 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
-import com.odeyalo.sonata.profiles.repository.R2dbcProfileRepository;
+import com.odeyalo.sonata.profiles.repository.r2dbc.delegate.R2dbcProfileRepositoryDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public final class ProfileController {
 
     @Autowired
-    R2dbcProfileRepository r2dbcProfileRepository;
+    R2dbcProfileRepositoryDelegate r2dbcProfileRepository;
 
     @GetMapping("/{user_id}")
     public Mono<ResponseEntity<UserProfileDto>> fetchUserProfileById(@PathVariable("user_id") final String userId) {
