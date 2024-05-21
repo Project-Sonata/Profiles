@@ -135,6 +135,15 @@ class ProfileServiceTest {
                 .verifyComplete();
     }
 
+    @Test
+    void shouldReturnNothingIfProfileDoesNoeExist() {
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .verifyComplete();
+    }
+
     static final class TestableBuilder {
         private final List<UserProfileEntity> predefinedEntities = new ArrayList<>();
 
