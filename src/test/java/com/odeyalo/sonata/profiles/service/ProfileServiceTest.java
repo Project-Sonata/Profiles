@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileFaker;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class ProfileServiceTest {
 
     @Test
@@ -20,6 +22,23 @@ class ProfileServiceTest {
         testable.getProfileForUser("miku")
                 .as(StepVerifier::create)
                 .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnProfileDisplayName() {
+        final var userProfile = UserProfileFaker.create()
+                .withPublicId("miku")
+                .withDisplayName("NakanoMiku")
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(userProfile)
+                .build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getDisplayName()).isEqualTo("NakanoMiku"))
                 .verifyComplete();
     }
 

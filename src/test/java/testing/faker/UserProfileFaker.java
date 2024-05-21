@@ -1,5 +1,6 @@
 package testing.faker;
 
+import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -7,8 +8,11 @@ public final class UserProfileFaker {
     private final UserProfile.UserProfileBuilder builder = UserProfile.builder();
 
     public UserProfileFaker() {
+        final Faker faker = Faker.instance();
+
         builder
-                .id(RandomStringUtils.randomAlphanumeric(22));
+                .id(RandomStringUtils.randomAlphanumeric(22))
+                .displayName(faker.name().username());
     }
 
     public static UserProfileFaker create() {
@@ -17,6 +21,11 @@ public final class UserProfileFaker {
 
     public UserProfileFaker withPublicId(final String publicId) {
         builder.id(publicId);
+        return this;
+    }
+
+    public UserProfileFaker withDisplayName(final String displayName) {
+        builder.displayName(displayName);
         return this;
     }
 

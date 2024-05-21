@@ -11,6 +11,7 @@ public final class ProfileService {
         return Mono.just(
                 UserProfile.builder()
                         .id(userId)
+                        .displayName("NakanoMiku")
                         .build()
         );
     }
