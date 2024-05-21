@@ -1,8 +1,10 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.config.mapper.Converters;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.memory.InMemoryUserProfileRepository;
+import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileFaker;
@@ -164,7 +166,9 @@ class ProfileServiceTest {
 
         public ProfileService build() {
             final InMemoryUserProfileRepository repository =  InMemoryUserProfileRepository.withPredefinedEntities(predefinedEntities);
-            return new ProfileService(repository);
+            final UserProfileMapper userProfileMapper = new Converters().userProfileMapper();
+
+            return new ProfileService(repository, userProfileMapper);
         }
 
         // Don't like stuff like this in tests, change it by using Adapter?
