@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileFaker;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProfileServiceTest {
@@ -59,7 +62,6 @@ class ProfileServiceTest {
                 .verifyComplete();
     }
 
-
     @Test
     void shouldReturnEmailOfTheUser() {
         final var userProfile = UserProfileFaker.create()
@@ -74,6 +76,23 @@ class ProfileServiceTest {
         testable.getProfileForUser("miku")
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getEmail()).isEqualTo("mikunakano@gmail.com"))
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnBirthdateOfTheUser() {
+        final var userProfile = UserProfileFaker.create()
+                .withPublicId("miku")
+                .withBirthdate(LocalDate.of(2004, Month.MAY, 17))
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(userProfile)
+                .build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2004-05-17"))
                 .verifyComplete();
     }
 

@@ -4,17 +4,26 @@ import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 public final class UserProfileFaker {
     private final UserProfile.UserProfileBuilder builder = UserProfile.builder();
 
     public UserProfileFaker() {
         final Faker faker = Faker.instance();
 
+        final LocalDate birthdate = faker.date().birthday(18, 70)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
         builder
                 .id(RandomStringUtils.randomAlphanumeric(22))
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
-                .email(faker.internet().emailAddress());
+                .email(faker.internet().emailAddress())
+                .birthdate(birthdate);
     }
 
     public static UserProfileFaker create() {
@@ -43,5 +52,10 @@ public final class UserProfileFaker {
 
     public UserProfile get() {
         return builder.build();
+    }
+
+    public UserProfileFaker withBirthdate(final LocalDate birthdate) {
+        builder.birthdate(birthdate);
+        return this;
     }
 }

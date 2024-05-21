@@ -4,6 +4,9 @@ import com.odeyalo.sonata.profiles.model.UserProfile;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 public final class ProfileService {
 
     @NotNull
@@ -14,6 +17,7 @@ public final class ProfileService {
                         .displayName("NakanoMiku")
                         .country("JP")
                         .email("mikunakano@gmail.com")
+                        .birthdate(LocalDate.of(2004, Month.MAY, 17))
                         .build()
         );
     }

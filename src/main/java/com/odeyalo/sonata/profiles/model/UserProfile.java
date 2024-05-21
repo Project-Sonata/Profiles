@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Value;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDate;
+
 @Value
 @Builder
 public class UserProfile {
@@ -15,4 +17,6 @@ public class UserProfile {
     String country;
     @NotNull
     String email;
+    @NotNull
+    LocalDate birthdate;
 }
