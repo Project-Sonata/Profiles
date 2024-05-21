@@ -96,6 +96,22 @@ class ProfileServiceTest {
                 .verifyComplete();
     }
 
+    @Test
+    void shouldReturnContextUriOfTheUser() {
+        final var userProfile = UserProfileFaker.create()
+                .withPublicId("miku")
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(userProfile)
+                .build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
+                .verifyComplete();
+    }
+
     static final class TestableBuilder {
 
         public static TestableBuilder instance() {

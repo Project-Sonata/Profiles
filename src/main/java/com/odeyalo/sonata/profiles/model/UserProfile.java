@@ -19,4 +19,6 @@ public class UserProfile {
     String email;
     @NotNull
     LocalDate birthdate;
+    @NotNull
+    String contextUri;
 }

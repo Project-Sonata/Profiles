@@ -18,12 +18,15 @@ public final class UserProfileFaker {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
 
+        final String id = RandomStringUtils.randomAlphanumeric(22);
+
         builder
-                .id(RandomStringUtils.randomAlphanumeric(22))
+                .id(id)
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
                 .email(faker.internet().emailAddress())
-                .birthdate(birthdate);
+                .birthdate(birthdate)
+                .contextUri("sonata:user:" + id);
     }
 
     public static UserProfileFaker create() {
@@ -32,6 +35,7 @@ public final class UserProfileFaker {
 
     public UserProfileFaker withPublicId(final String publicId) {
         builder.id(publicId);
+        builder.contextUri("sonata:user:" + publicId);
         return this;
     }
 

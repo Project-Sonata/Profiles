@@ -18,6 +18,7 @@ public final class ProfileService {
                         .country("JP")
                         .email("mikunakano@gmail.com")
                         .birthdate(LocalDate.of(2004, Month.MAY, 17))
+                        .contextUri("sonata:user:" + userId)
                         .build()
         );
     }
