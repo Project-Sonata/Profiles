@@ -4,8 +4,10 @@ import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+@Service
 public final class ProfileService {
     private final UserProfileRepository profileRepository;
 
