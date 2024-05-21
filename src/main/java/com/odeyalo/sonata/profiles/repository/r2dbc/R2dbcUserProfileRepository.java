@@ -1,8 +1,8 @@
 package com.odeyalo.sonata.profiles.repository.r2dbc;
 
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
-import com.odeyalo.sonata.profiles.repository.r2dbc.delegate.R2dbcProfileRepositoryDelegate;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
+import com.odeyalo.sonata.profiles.repository.r2dbc.delegate.R2dbcProfileRepositoryDelegate;
 import org.jetbrains.annotations.NotNull;
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
