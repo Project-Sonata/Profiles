@@ -12,6 +12,7 @@ public final class ProfileService {
                 UserProfile.builder()
                         .id(userId)
                         .displayName("NakanoMiku")
+                        .country("JP")
                         .build()
         );
     }

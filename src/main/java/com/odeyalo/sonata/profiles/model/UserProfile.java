@@ -11,4 +11,6 @@ public class UserProfile {
     String id;
     @NotNull
     String displayName;
+    @NotNull
+    String country;
 }

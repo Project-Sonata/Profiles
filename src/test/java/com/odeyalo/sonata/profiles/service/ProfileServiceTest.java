@@ -42,6 +42,23 @@ class ProfileServiceTest {
                 .verifyComplete();
     }
 
+    @Test
+    void shouldReturnCountryOfTheUser() {
+        final var userProfile = UserProfileFaker.create()
+                .withPublicId("miku")
+                .withCountry("JP")
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(userProfile)
+                .build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getCountry()).isEqualTo("JP"))
+                .verifyComplete();
+    }
+
     static final class TestableBuilder {
 
         public static TestableBuilder instance() {
