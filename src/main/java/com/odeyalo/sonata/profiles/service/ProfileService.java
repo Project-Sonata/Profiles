@@ -13,6 +13,7 @@ public final class ProfileService {
                         .id(userId)
                         .displayName("NakanoMiku")
                         .country("JP")
+                        .email("mikunakano@gmail.com")
                         .build()
         );
     }

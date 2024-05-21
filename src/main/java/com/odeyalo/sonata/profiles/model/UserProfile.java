@@ -13,4 +13,6 @@ public class UserProfile {
     String displayName;
     @NotNull
     String country;
+    @NotNull
+    String email;
 }

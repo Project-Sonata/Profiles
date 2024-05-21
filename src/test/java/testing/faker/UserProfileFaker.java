@@ -13,7 +13,8 @@ public final class UserProfileFaker {
         builder
                 .id(RandomStringUtils.randomAlphanumeric(22))
                 .displayName(faker.name().username())
-                .country(faker.country().countryCode2());
+                .country(faker.country().countryCode2())
+                .email(faker.internet().emailAddress());
     }
 
     public static UserProfileFaker create() {
@@ -32,6 +33,11 @@ public final class UserProfileFaker {
 
     public UserProfileFaker withCountry(final String country) {
         builder.country(country);
+        return this;
+    }
+
+    public UserProfileFaker withEmail(final String email) {
+        builder.email(email);
         return this;
     }
 

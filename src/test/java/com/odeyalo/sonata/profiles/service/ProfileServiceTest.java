@@ -59,6 +59,24 @@ class ProfileServiceTest {
                 .verifyComplete();
     }
 
+
+    @Test
+    void shouldReturnEmailOfTheUser() {
+        final var userProfile = UserProfileFaker.create()
+                .withPublicId("miku")
+                .withEmail("mikunakano@gmail.com")
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(userProfile)
+                .build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getEmail()).isEqualTo("mikunakano@gmail.com"))
+                .verifyComplete();
+    }
+
     static final class TestableBuilder {
 
         public static TestableBuilder instance() {
