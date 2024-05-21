@@ -3,12 +3,16 @@ package com.odeyalo.sonata.profiles.repository;
 import com.odeyalo.sonata.profiles.config.persistance.r2dbc.R2dbcConfiguration;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.model.Gender;
+import com.odeyalo.sonata.profiles.repository.r2dbc.R2dbcUserProfileRepository;
+import com.odeyalo.sonata.profiles.repository.r2dbc.delegate.R2dbcProfileRepositoryDelegate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
@@ -22,10 +26,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataR2dbcTest
 @ActiveProfiles("test")
 @Import(R2dbcConfiguration.class)
-class R2dbcProfileRepositoryTest {
+class R2dbcUserProfileRepositoryTest {
 
     @Autowired
-    R2dbcProfileRepository testable;
+    R2dbcUserProfileRepository testable;
+
+    @TestConfiguration
+    static class Config {
+
+        @Bean
+        public R2dbcUserProfileRepository r2dbcUserProfileRepository(final R2dbcProfileRepositoryDelegate delegate) {
+            return new R2dbcUserProfileRepository(delegate);
+        }
+    }
 
     @AfterEach
     void tearDown() {
