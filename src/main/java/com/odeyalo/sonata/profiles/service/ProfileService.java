@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
@@ -19,6 +20,7 @@ public final class ProfileService {
                         .email("mikunakano@gmail.com")
                         .birthdate(LocalDate.of(2004, Month.MAY, 17))
                         .contextUri("sonata:user:" + userId)
+                        .gender(Gender.FEMALE)
                         .build()
         );
     }

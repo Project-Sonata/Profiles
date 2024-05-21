@@ -8,6 +8,7 @@ import testing.faker.UserProfileFaker;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static com.odeyalo.sonata.profiles.model.Gender.FEMALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ProfileServiceTest {
@@ -109,6 +110,23 @@ class ProfileServiceTest {
         testable.getProfileForUser("miku")
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnGenderOfTheUser() {
+        final var userProfile = UserProfileFaker.create()
+                .withPublicId("miku")
+                .withGender(FEMALE)
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(userProfile)
+                .build();
+
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .assertNext(it -> assertThat(it.getGender()).isEqualTo(FEMALE))
                 .verifyComplete();
     }
 

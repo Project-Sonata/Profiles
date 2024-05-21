@@ -21,4 +21,6 @@ public class UserProfile {
     LocalDate birthdate;
     @NotNull
     String contextUri;
+    @NotNull
+    Gender gender;
 }
