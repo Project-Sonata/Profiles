@@ -24,8 +24,20 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.jetbrains:annotations:23.0.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'org.flywaydb:flyway-core'
+    implementation('com.github.javafaker:javafaker:1.0.2') { exclude(module: 'org.yaml') }
+    implementation 'org.yaml:snakeyaml:1.33'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+
     compileOnly 'org.projectlombok:lombok'
+
+    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:r2dbc-postgresql'
+
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 }
