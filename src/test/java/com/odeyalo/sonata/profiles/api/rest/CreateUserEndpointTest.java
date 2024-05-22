@@ -20,10 +20,10 @@ class CreateUserEndpointTest {
     WebTestClient webTestClient;
 
     @Test
-    void shouldReturn204NoContentStatusOnSuccess() {
+    void shouldReturn201CreatedOnSuccess() {
         final WebTestClient.ResponseSpec responseSpec = createUserRequest();
 
-        responseSpec.expectStatus().isNoContent();
+        responseSpec.expectStatus().isCreated();
     }
 
     @NotNull

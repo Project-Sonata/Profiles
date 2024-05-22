@@ -11,4 +11,4 @@ Content-Type: application/json
 
 #### Response
 
-204 No Content - user has been created successfully
+201 Created - user has been created successfully
