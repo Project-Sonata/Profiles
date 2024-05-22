@@ -4,10 +4,7 @@ import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
 import com.odeyalo.sonata.profiles.service.ProfileService;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileDtoMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -29,5 +26,12 @@ public final class ProfileController {
                 .map(userProfileDtoMapper::toUserProfileDto)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.noContent().build());
+    }
+
+    @PostMapping
+    public Mono<ResponseEntity<Void>> createUser() {
+        return Mono.just(
+                ResponseEntity.noContent().build()
+        );
     }
 }
