@@ -29,6 +29,7 @@ dependencies {
     implementation('com.github.javafaker:javafaker:1.0.2') { exclude(module: 'org.yaml') }
     implementation 'org.yaml:snakeyaml:1.33'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    implementation 'commons-validator:commons-validator:1.8.0'
 
     compileOnly 'org.projectlombok:lombok'
 
