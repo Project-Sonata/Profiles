@@ -39,6 +39,11 @@ public final class CreateUserInfoDtoFaker {
         return this;
     }
 
+    public CreateUserInfoDtoFaker withBirthdate(final LocalDate birthdate) {
+        builder.birthdate(birthdate);
+        return this;
+    }
+
     public CreateUserInfoDto get() {
         return builder.build();
     }

@@ -13,6 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import testing.faker.CreateUserInfoDtoFaker;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 @AutoConfigureWebTestClient
 @ActiveProfiles("test")
@@ -45,6 +47,28 @@ class CreateUserEndpointTest {
     void shouldReturnBadRequestIfEmailIsNotValidFormat() {
         final var body = CreateUserInfoDtoFaker.create()
                 .withEmail("invalid_format")
+                .get();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectStatus().isBadRequest();
+    }
+
+    @Test
+    void shouldReturnBadRequestIfBirthdateIsLessThan14YearsOld() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withBirthdate(LocalDate.now().minusYears(12))
+                .get();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectStatus().isBadRequest();
+    }
+
+    @Test
+    void shouldReturnBadRequestIfBirthdateIsInTheFuture() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withBirthdate(LocalDate.now().plusYears(10))
                 .get();
 
         final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
