@@ -41,6 +41,17 @@ class CreateUserEndpointTest {
         responseSpec.expectHeader().location("/users/miku");
     }
 
+    @Test
+    void shouldReturnBadRequestIfEmailIsNotValidFormat() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withEmail("invalid_format")
+                .get();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectStatus().isBadRequest();
+    }
+
     @NotNull
     private WebTestClient.ResponseSpec sendCreateUserRequest(@NotNull CreateUserInfoDto body) {
         return webTestClient.post()

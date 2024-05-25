@@ -34,6 +34,11 @@ public final class CreateUserInfoDtoFaker {
         return this;
     }
 
+    public CreateUserInfoDtoFaker withEmail(final String email) {
+        builder.email(email);
+        return this;
+    }
+
     public CreateUserInfoDto get() {
         return builder.build();
     }
