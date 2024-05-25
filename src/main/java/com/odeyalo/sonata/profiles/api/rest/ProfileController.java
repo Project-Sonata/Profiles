@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
+import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
 import com.odeyalo.sonata.profiles.service.ProfileService;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileDtoMapper;
@@ -30,7 +31,7 @@ public final class ProfileController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Void>> createUser() {
+    public Mono<ResponseEntity<Void>> createUser(@RequestBody CreateUserInfoDto body) {
         return Mono.just(
                 ResponseEntity.status(HttpStatus.CREATED).build()
         );
