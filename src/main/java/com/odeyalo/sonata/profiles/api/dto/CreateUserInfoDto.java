@@ -11,8 +11,10 @@ import java.time.LocalDate;
 @Value
 @Builder
 public class CreateUserInfoDto {
+    @NotNull
     String id;
     String username;
+    @NotNull
     @ValidBirthdate
     LocalDate birthdate;
     @NotNull
