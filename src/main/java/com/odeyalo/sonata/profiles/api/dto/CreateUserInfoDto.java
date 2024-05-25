@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class CreateUserInfoDto {
     @NotNull
     String id;
+    @NotNull
     String username;
     @NotNull
     @ValidBirthdate

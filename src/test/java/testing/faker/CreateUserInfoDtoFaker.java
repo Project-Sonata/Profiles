@@ -44,6 +44,11 @@ public final class CreateUserInfoDtoFaker {
         return this;
     }
 
+    public CreateUserInfoDtoFaker withUsername(final String username) {
+        builder.username(username);
+        return this;
+    }
+
     public CreateUserInfoDto get() {
         return builder.build();
     }

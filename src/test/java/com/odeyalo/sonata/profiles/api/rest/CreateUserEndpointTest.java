@@ -46,7 +46,18 @@ class CreateUserEndpointTest {
     @Test
     void shouldReturnBadRequestIfIdIsNull() {
         final var body = CreateUserInfoDtoFaker.create()
-                .withEmail(null)
+                .withId(null)
+                .get();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectStatus().isBadRequest();
+    }
+
+    @Test
+    void shouldReturnBadRequestIfUsernameIsNull() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withUsername(null)
                 .get();
 
         final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
