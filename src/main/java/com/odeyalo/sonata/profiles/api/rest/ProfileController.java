@@ -4,10 +4,11 @@ import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
 import com.odeyalo.sonata.profiles.service.ProfileService;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileDtoMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
@@ -33,7 +34,9 @@ public final class ProfileController {
     @PostMapping
     public Mono<ResponseEntity<Void>> createUser(@RequestBody CreateUserInfoDto body) {
         return Mono.just(
-                ResponseEntity.status(HttpStatus.CREATED).build()
+                ResponseEntity.created(URI.create(
+                        "/users/" + body.getId()
+                )).build()
         );
     }
 }

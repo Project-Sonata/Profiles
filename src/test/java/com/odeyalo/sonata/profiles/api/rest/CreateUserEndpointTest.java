@@ -25,6 +25,7 @@ class CreateUserEndpointTest {
     @Test
     void shouldReturn201CreatedOnSuccess() {
         final var body = CreateUserInfoDto.builder()
+                .id("miku")
                 .username("odeyalo")
                 .birthdate(LocalDate.now())
                 .email("odeyalo@gmail.com")
@@ -33,6 +34,20 @@ class CreateUserEndpointTest {
         final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
 
         responseSpec.expectStatus().isCreated();
+    }
+
+    @Test
+    void shouldReturnLocationUriWithCreatedResource() {
+        final var body = CreateUserInfoDto.builder()
+                .id("miku")
+                .username("odeyalo")
+                .birthdate(LocalDate.now())
+                .email("odeyalo@gmail.com")
+                .build();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectHeader().location("/users/miku");
     }
 
     @NotNull

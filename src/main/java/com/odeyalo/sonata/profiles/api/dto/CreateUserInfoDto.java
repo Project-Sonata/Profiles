@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Builder
 public class CreateUserInfoDto {
     @NotNull
+    String id;
+    @NotNull
     String username;
     @NotNull
     LocalDate birthdate;
