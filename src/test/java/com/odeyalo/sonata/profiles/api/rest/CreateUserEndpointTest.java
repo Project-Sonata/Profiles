@@ -11,8 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import java.time.LocalDate;
+import testing.faker.CreateUserInfoDtoFaker;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -24,12 +23,7 @@ class CreateUserEndpointTest {
 
     @Test
     void shouldReturn201CreatedOnSuccess() {
-        final var body = CreateUserInfoDto.builder()
-                .id("miku")
-                .username("odeyalo")
-                .birthdate(LocalDate.now())
-                .email("odeyalo@gmail.com")
-                .build();
+        final var body = CreateUserInfoDtoFaker.create().get();
 
         final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
 
@@ -38,15 +32,12 @@ class CreateUserEndpointTest {
 
     @Test
     void shouldReturnLocationUriWithCreatedResource() {
-        final var body = CreateUserInfoDto.builder()
-                .id("miku")
-                .username("odeyalo")
-                .birthdate(LocalDate.now())
-                .email("odeyalo@gmail.com")
-                .build();
+        final var body = CreateUserInfoDtoFaker.create()
+                .withId("miku")
+                .get();
 
         final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
-
+        // ID should be the same as we provided
         responseSpec.expectHeader().location("/users/miku");
     }
 
