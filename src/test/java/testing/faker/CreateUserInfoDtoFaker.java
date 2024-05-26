@@ -2,6 +2,7 @@ package testing.faker;
 
 import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
+import com.odeyalo.sonata.profiles.model.Gender;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
@@ -22,7 +23,8 @@ public final class CreateUserInfoDtoFaker {
                 .id(RandomStringUtils.randomAlphanumeric(22))
                 .email(faker.internet().emailAddress())
                 .birthdate(birthdate)
-                .username(faker.name().username());
+                .username(faker.name().username())
+                .gender(faker.options().option(Gender.class));
     }
 
     public static CreateUserInfoDtoFaker create() {
@@ -51,5 +53,10 @@ public final class CreateUserInfoDtoFaker {
 
     public CreateUserInfoDto get() {
         return builder.build();
+    }
+
+    public CreateUserInfoDtoFaker withGender(final Gender gender) {
+        builder.gender(gender);
+        return this;
     }
 }

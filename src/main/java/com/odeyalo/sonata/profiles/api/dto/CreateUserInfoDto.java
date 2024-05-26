@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.api.dto;
 
+import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.support.validation.ValidBirthdate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -21,4 +22,6 @@ public class CreateUserInfoDto {
     @NotNull
     @Email
     String email;
+    @NotNull
+    Gender gender;
 }

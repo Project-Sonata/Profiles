@@ -98,6 +98,17 @@ class CreateUserEndpointTest {
         responseSpec.expectStatus().isBadRequest();
     }
 
+    @Test
+    void shouldReturnBadRequestIfGenderNotIncluded() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withGender(null)
+                .get();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectStatus().isBadRequest();
+    }
+
     @NotNull
     private WebTestClient.ResponseSpec sendCreateUserRequest(@NotNull CreateUserInfoDto body) {
         return webTestClient.post()
