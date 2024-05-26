@@ -109,6 +109,17 @@ class CreateUserEndpointTest {
         responseSpec.expectStatus().isBadRequest();
     }
 
+    @Test
+    void shouldReturnBadRequestIfContryIsNotISO3122V2() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withCountry("JPS")
+                .get();
+
+        final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
+
+        responseSpec.expectStatus().isBadRequest();
+    }
+
     @NotNull
     private WebTestClient.ResponseSpec sendCreateUserRequest(@NotNull CreateUserInfoDto body) {
         return webTestClient.post()
