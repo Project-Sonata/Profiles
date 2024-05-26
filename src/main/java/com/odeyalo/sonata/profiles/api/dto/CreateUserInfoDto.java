@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Builder
 public class CreateUserInfoDto {
     @NotNull
+    @JsonProperty("sonata_id")
     String id;
     @NotNull
     String username;
