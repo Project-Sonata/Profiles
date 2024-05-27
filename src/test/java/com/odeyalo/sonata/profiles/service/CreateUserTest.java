@@ -1,7 +1,10 @@
 package com.odeyalo.sonata.profiles.service;
 
 
+import com.odeyalo.sonata.profiles.model.Gender;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import reactor.test.StepVerifier;
 import testing.faker.CreateUserInfoFaker;
 
@@ -73,6 +76,23 @@ class CreateUserTest extends UserProfileServiceTest {
                 .as(StepVerifier::create)
                 // then
                 .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2000-01-25"))
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = Gender.class)
+    void shouldReturnUserWithTheSameGender(final Gender gender) {
+        // given
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withGender(gender)
+                .get();
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                // then
+                .assertNext(it -> assertThat(it.getGender()).isEqualTo(gender))
                 .verifyComplete();
     }
 }

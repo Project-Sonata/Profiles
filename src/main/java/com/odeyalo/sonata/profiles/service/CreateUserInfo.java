@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.core.Birthdate;
 import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
@@ -18,4 +19,6 @@ public class CreateUserInfo {
     String countryCode;
     @NotNull
     Birthdate birthdate;
+    @NotNull
+    Gender gender;
 }

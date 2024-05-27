@@ -1,6 +1,5 @@
 package com.odeyalo.sonata.profiles.service;
 
-import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
@@ -34,7 +33,7 @@ public final class ProfileService {
                         .country(userInfo.getCountryCode())
                         .birthdate(userInfo.getBirthdate().value())
                         .displayName("mock")
-                        .gender(Gender.NONE)
+                        .gender(userInfo.getGender())
                         .build());
     }
 }
