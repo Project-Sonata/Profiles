@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.model.core.Birthdate;
 import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
 import lombok.Builder;
@@ -15,4 +16,6 @@ public class CreateUserInfo {
     Email email;
     @NotNull
     String countryCode;
+    @NotNull
+    Birthdate birthdate;
 }

@@ -8,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDate;
-
 @Service
 public final class ProfileService {
     private final UserProfileRepository profileRepository;
@@ -34,7 +32,7 @@ public final class ProfileService {
                         .email(userInfo.getEmail().value())
                         .contextUri("mock")
                         .country(userInfo.getCountryCode())
-                        .birthdate(LocalDate.of(1000, 2, 3))
+                        .birthdate(userInfo.getBirthdate().value())
                         .displayName("mock")
                         .gender(Gender.NONE)
                         .build());

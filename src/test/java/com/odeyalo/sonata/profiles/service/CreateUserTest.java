@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 import testing.faker.CreateUserInfoFaker;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CreateUserTest extends UserProfileServiceTest {
@@ -54,6 +57,22 @@ class CreateUserTest extends UserProfileServiceTest {
                 .as(StepVerifier::create)
                 // then
                 .assertNext(it -> assertThat(it.getCountry()).isEqualTo("JP"))
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnUserWithTheSameBirthdate() {
+        // given
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withBirthdate(LocalDate.of(2000, Month.JANUARY, 25))
+                .get();
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                // then
+                .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2000-01-25"))
                 .verifyComplete();
     }
 }
