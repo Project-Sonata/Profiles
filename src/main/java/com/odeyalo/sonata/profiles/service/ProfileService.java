@@ -32,7 +32,7 @@ public final class ProfileService {
         Mono<UserProfile> saveUser = profileRepository.save(userProfile)
                 .map(userProfileMapper::toUserProfile);
 
-        return profileRepository.findByPublicId(userInfo.getId().value())
+        return profileRepository.findByPublicIdOrEmail(userInfo.getId().value(), userInfo.getEmail().value())
                 .flatMap(existingUser -> Mono.<UserProfile> error(UserAlreadyExistException.withCustomMessage("A user with a given ID already exist")))
                 .switchIfEmpty(saveUser);
     }

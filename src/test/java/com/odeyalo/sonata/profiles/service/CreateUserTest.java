@@ -173,4 +173,25 @@ class CreateUserTest extends UserProfileServiceTest {
                 .expectError(UserAlreadyExistException.class)
                 .verify();
     }
+    @Test
+    void shouldReturnErrorIfUserWithEmailAlreadyExist() {
+        // given
+        final UserProfile profile1 = UserProfileFaker.create()
+                .withEmail("miku.nakano@gmail.com")
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(profile1)
+                .build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withEmail("miku.nakano@gmail.com")
+                .get();
+
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                .expectError(UserAlreadyExistException.class)
+                .verify();
+    }
 }
