@@ -1,13 +1,9 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
-import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
-import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
-import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
+import com.odeyalo.sonata.profiles.service.CreateUserInfo;
 import com.odeyalo.sonata.profiles.service.ProfileService;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileDtoMapper;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -19,9 +15,6 @@ import java.net.URI;
 public final class ProfileController {
     private final ProfileService profileService;
     private final UserProfileDtoMapper userProfileDtoMapper;
-
-    @Autowired
-    UserProfileRepository profileRepository;
 
     public ProfileController(final ProfileService profileService,
                              final UserProfileDtoMapper userProfileDtoMapper) {
@@ -39,21 +32,11 @@ public final class ProfileController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Void>> createUser(@RequestBody @Valid CreateUserInfoDto body) {
-        final var profile = UserProfileEntity.builder()
-                .publicId(body.getId())
-                .email(body.getEmail())
-                .country(body.getCountryCode())
-                .displayName(body.getUsername())
-                .gender(body.getGender())
-                .birthdate(body.getBirthdate())
-                .contextUri("sonata:user:" + body.getId())
-                .build();
+    public Mono<ResponseEntity<Void>> createUser(CreateUserInfo createUserInfo) {
 
-        return profileRepository.save(profile)
-                .map(it -> ResponseEntity.created(URI.create(
-                                "/users/" + body.getId()
-                        )).build()
+        return profileService.createUser(createUserInfo)
+                .map(
+                        it -> ResponseEntity.created(URI.create("/users/" + it.getId())).build()
                 );
     }
 }
