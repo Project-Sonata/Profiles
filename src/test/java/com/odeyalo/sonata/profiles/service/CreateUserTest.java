@@ -127,4 +127,25 @@ class CreateUserTest extends UserProfileServiceTest {
                 .assertNext(it -> assertThat(it.getDisplayName()).isEqualTo("Nakano.Miku"))
                 .verifyComplete();
     }
+
+    @Test
+    void userShouldBeFetchedAfterSaving() {
+        // given
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withId("miku")
+                .get();
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                .expectNextCount(1)
+                .verifyComplete();
+
+        // then
+        testable.getProfileForUser("miku")
+                .as(StepVerifier::create)
+                .expectNextCount(1)
+                .verifyComplete();
+    }
 }

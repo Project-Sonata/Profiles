@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
@@ -25,15 +26,18 @@ public final class ProfileService {
 
     @NotNull
     public Mono<UserProfile> createUser(final CreateUserInfo userInfo) {
-        return Mono.just(
-                UserProfile.builder()
-                        .id(userInfo.getId().value())
-                        .email(userInfo.getEmail().value())
-                        .contextUri("sonata:user:" + userInfo.getId().value())
-                        .country(userInfo.getCountryCode())
-                        .birthdate(userInfo.getBirthdate().value())
-                        .displayName(userInfo.getUsername().value())
-                        .gender(userInfo.getGender())
-                        .build());
+        final var userProfile = UserProfileEntity.builder()
+                .publicId(userInfo.getId().value())
+                .email(userInfo.getEmail().value())
+                .contextUri("sonata:user:" + userInfo.getId().value())
+                .country(userInfo.getCountryCode())
+                .birthdate(userInfo.getBirthdate().value())
+                .displayName(userInfo.getUsername().value())
+                .gender(userInfo.getGender())
+                .build();
+
+
+        return profileRepository.save(userProfile)
+                .map(userProfileMapper::toUserProfile);
     }
 }
