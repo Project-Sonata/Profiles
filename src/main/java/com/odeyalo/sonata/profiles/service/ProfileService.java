@@ -31,7 +31,7 @@ public final class ProfileService {
         return Mono.just(
                 UserProfile.builder()
                         .id(userInfo.getId().value())
-                        .email("mock")
+                        .email(userInfo.getEmail().value())
                         .contextUri("mock")
                         .country("mock")
                         .birthdate(LocalDate.of(1000, 2, 3))
