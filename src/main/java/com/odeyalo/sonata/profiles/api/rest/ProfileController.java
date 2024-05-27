@@ -1,10 +1,9 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
-import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import com.odeyalo.sonata.profiles.service.CreateUserInfo;
 import com.odeyalo.sonata.profiles.service.ProfileService;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileDtoMapper;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -33,11 +32,11 @@ public final class ProfileController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<Void>> createUser(@RequestBody @Valid CreateUserInfoDto body) {
-        return Mono.just(
-                ResponseEntity.created(URI.create(
-                        "/users/" + body.getId()
-                )).build()
-        );
+    public Mono<ResponseEntity<Void>> createUser(CreateUserInfo createUserInfo) {
+
+        return profileService.createUser(createUserInfo)
+                .map(
+                        it -> ResponseEntity.created(URI.create("/users/" + it.getId())).build()
+                );
     }
 }

@@ -22,4 +22,8 @@ public record Birthdate(@NotNull LocalDate value) {
             throw new IllegalArgumentException("Invalid birthdate: Birthdate cannot be in the future.");
         }
     }
+
+    public static Birthdate of(@NotNull LocalDate value) {
+        return new Birthdate(value);
+    }
 }
