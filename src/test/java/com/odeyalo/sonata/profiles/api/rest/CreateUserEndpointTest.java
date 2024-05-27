@@ -78,6 +78,20 @@ class CreateUserEndpointTest {
     }
 
     @Test
+    void shouldReturn400BadRequestIfUserWithIdAlreadyExist() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withId("miku")
+                .get();
+
+        final WebTestClient.ResponseSpec ignored = sendCreateUserRequest(body);
+
+        final WebTestClient.ResponseSpec secondRequest = sendCreateUserRequest(body);
+
+        // We expect that the second request with same payload will produce error
+        secondRequest.expectStatus().isBadRequest();
+    }
+
+    @Test
     void shouldReturnBadRequestIfIdIsNull() {
         final var body = CreateUserInfoDtoFaker.create()
                 .withId(null)
