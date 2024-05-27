@@ -20,4 +20,8 @@ public record Username(@NotNull String value) {
     public Username {
         Assert.hasText(value, () -> "A username cannot be empty!");
     }
+
+    public static Username of(@NotNull final String value) {
+        return new Username(value);
+    }
 }

@@ -5,6 +5,7 @@ import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.core.Birthdate;
 import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
+import com.odeyalo.sonata.profiles.model.core.Username;
 import com.odeyalo.sonata.profiles.service.CreateUserInfo;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,7 +28,8 @@ public final class CreateUserInfoFaker {
                 .email(Email.of(faker.internet().emailAddress()))
                 .countryCode(StringUtils.toRootUpperCase(faker.country().countryCode2()))
                 .birthdate(Birthdate.of(birthdate))
-                .gender(faker.options().option(Gender.class));
+                .gender(faker.options().option(Gender.class))
+                .username(Username.of(faker.name().username()));
     }
 
     public static CreateUserInfoFaker create() {
@@ -56,6 +58,11 @@ public final class CreateUserInfoFaker {
 
     public CreateUserInfoFaker withGender(final Gender gender) {
         builder.gender(gender);
+        return this;
+    }
+
+    public CreateUserInfoFaker withUsername(final String username) {
+        builder.username(Username.of(username));
         return this;
     }
 

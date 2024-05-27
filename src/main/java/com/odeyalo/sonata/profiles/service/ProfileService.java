@@ -32,7 +32,7 @@ public final class ProfileService {
                         .contextUri("sonata:user:" + userInfo.getId().value())
                         .country(userInfo.getCountryCode())
                         .birthdate(userInfo.getBirthdate().value())
-                        .displayName("mock")
+                        .displayName(userInfo.getUsername().value())
                         .gender(userInfo.getGender())
                         .build());
     }

@@ -111,4 +111,20 @@ class CreateUserTest extends UserProfileServiceTest {
                 .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
                 .verifyComplete();
     }
+
+    @Test
+    void shouldUseUsernameAsDisplayName() {
+        // given
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withUsername("Nakano.Miku")
+                .get();
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                // then
+                .assertNext(it -> assertThat(it.getDisplayName()).isEqualTo("Nakano.Miku"))
+                .verifyComplete();
+    }
 }
