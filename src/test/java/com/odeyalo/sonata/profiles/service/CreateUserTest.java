@@ -24,6 +24,7 @@ class CreateUserTest extends UserProfileServiceTest {
                 .assertNext(it -> assertThat(it.getId()).isEqualTo("miku"))
                 .verifyComplete();
     }
+
     @Test
     void shouldReturnUserWithTheSameEmail() {
         // given
@@ -37,6 +38,22 @@ class CreateUserTest extends UserProfileServiceTest {
                 .as(StepVerifier::create)
                 // then
                 .assertNext(it -> assertThat(it.getEmail()).isEqualTo("miku.nakano@gmail.com"))
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnUserWithTheSameCountry() {
+        // given
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withCountryCode("JP")
+                .get();
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                // then
+                .assertNext(it -> assertThat(it.getCountry()).isEqualTo("JP"))
                 .verifyComplete();
     }
 }

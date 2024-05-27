@@ -33,7 +33,7 @@ public final class ProfileService {
                         .id(userInfo.getId().value())
                         .email(userInfo.getEmail().value())
                         .contextUri("mock")
-                        .country("mock")
+                        .country(userInfo.getCountryCode())
                         .birthdate(LocalDate.of(1000, 2, 3))
                         .displayName("mock")
                         .gender(Gender.NONE)

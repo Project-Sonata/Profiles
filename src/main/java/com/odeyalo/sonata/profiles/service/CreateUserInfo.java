@@ -13,4 +13,6 @@ public class CreateUserInfo {
     UserId id;
     @NotNull
     Email email;
+    @NotNull
+    String countryCode;
 }
