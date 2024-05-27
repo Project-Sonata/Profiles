@@ -2,7 +2,10 @@ package com.odeyalo.sonata.profiles.api.rest;
 
 
 import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
+import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -11,17 +14,35 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import testing.AutoConfigureProfileHttpOperations;
+import testing.ProfileHttpOperations;
 import testing.faker.CreateUserInfoDtoFaker;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @AutoConfigureWebTestClient
+@AutoConfigureProfileHttpOperations
 @ActiveProfiles("test")
 class CreateUserEndpointTest {
 
     @Autowired
     WebTestClient webTestClient;
+
+    @Autowired
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    ProfileHttpOperations profileHttpOperations;
+
+
+    @Autowired
+    UserProfileRepository userProfileRepository;
+
+    @AfterEach
+    void tearDown() {
+        userProfileRepository.deleteAll().block();
+    }
 
     @Test
     void shouldReturn201CreatedOnSuccess() {
@@ -41,6 +62,19 @@ class CreateUserEndpointTest {
         final WebTestClient.ResponseSpec responseSpec = sendCreateUserRequest(body);
         // ID should be the same as we provided
         responseSpec.expectHeader().location("/users/miku");
+    }
+
+    @Test
+    void createdUserShouldBeSaved() {
+        final var body = CreateUserInfoDtoFaker.create()
+                .withId("miku")
+                .get();
+
+        final WebTestClient.ResponseSpec ignored = sendCreateUserRequest(body);
+
+        final UserProfileDto userProfile = profileHttpOperations.getUserProfile("miku");
+
+        assertThat(userProfile).isNotNull();
     }
 
     @Test
@@ -110,7 +144,7 @@ class CreateUserEndpointTest {
     }
 
     @Test
-    void shouldReturnBadRequestIfContryIsNotISO3122V2() {
+    void shouldReturnBadRequestIfCountryIsNotISO3122V2() {
         final var body = CreateUserInfoDtoFaker.create()
                 .withCountry("JPS")
                 .get();
