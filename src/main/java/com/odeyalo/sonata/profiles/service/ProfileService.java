@@ -26,7 +26,16 @@ public final class ProfileService {
 
     @NotNull
     public Mono<UserProfile> createUser(final CreateUserInfo userInfo) {
-        final var userProfile = UserProfileEntity.builder()
+        final var userProfile = toUserProfileEntity(userInfo);
+
+        return profileRepository.save(userProfile)
+                .map(userProfileMapper::toUserProfile);
+    }
+
+    @NotNull
+    private static UserProfileEntity toUserProfileEntity(final CreateUserInfo userInfo) {
+        // maybe move this to mapstruct converter but i am not sure about it
+        return UserProfileEntity.builder()
                 .publicId(userInfo.getId().value())
                 .email(userInfo.getEmail().value())
                 .contextUri("sonata:user:" + userInfo.getId().value())
@@ -35,9 +44,5 @@ public final class ProfileService {
                 .displayName(userInfo.getUsername().value())
                 .gender(userInfo.getGender())
                 .build();
-
-
-        return profileRepository.save(userProfile)
-                .map(userProfileMapper::toUserProfile);
     }
 }
