@@ -1,12 +1,15 @@
 package com.odeyalo.sonata.profiles.service;
 
 
+import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.Gender;
+import com.odeyalo.sonata.profiles.model.UserProfile;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import reactor.test.StepVerifier;
 import testing.faker.CreateUserInfoFaker;
+import testing.faker.UserProfileFaker;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -147,5 +150,27 @@ class CreateUserTest extends UserProfileServiceTest {
                 .as(StepVerifier::create)
                 .expectNextCount(1)
                 .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnErrorIfUserWithIdAlreadyExist() {
+        // given
+        final UserProfile profile1 = UserProfileFaker.create()
+                .withPublicId("miku")
+                .get();
+
+        final ProfileService testable = TestableBuilder.instance()
+                .withProfiles(profile1)
+                .build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withId("miku")
+                .get();
+
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                .expectError(UserAlreadyExistException.class)
+                .verify();
     }
 }

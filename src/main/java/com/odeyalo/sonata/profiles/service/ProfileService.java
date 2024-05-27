@@ -1,6 +1,7 @@
 package com.odeyalo.sonata.profiles.service;
 
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
@@ -28,8 +29,12 @@ public final class ProfileService {
     public Mono<UserProfile> createUser(final CreateUserInfo userInfo) {
         final var userProfile = toUserProfileEntity(userInfo);
 
-        return profileRepository.save(userProfile)
+        Mono<UserProfile> saveUser = profileRepository.save(userProfile)
                 .map(userProfileMapper::toUserProfile);
+
+        return profileRepository.findByPublicId(userInfo.getId().value())
+                .flatMap(existingUser -> Mono.<UserProfile> error(UserAlreadyExistException.withCustomMessage("A user with a given ID already exist")))
+                .switchIfEmpty(saveUser);
     }
 
     @NotNull
