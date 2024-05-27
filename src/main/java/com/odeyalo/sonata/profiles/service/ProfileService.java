@@ -29,7 +29,7 @@ public final class ProfileService {
                 UserProfile.builder()
                         .id(userInfo.getId().value())
                         .email(userInfo.getEmail().value())
-                        .contextUri("mock")
+                        .contextUri("sonata:user:" + userInfo.getId().value())
                         .country(userInfo.getCountryCode())
                         .birthdate(userInfo.getBirthdate().value())
                         .displayName("mock")

@@ -95,4 +95,20 @@ class CreateUserTest extends UserProfileServiceTest {
                 .assertNext(it -> assertThat(it.getGender()).isEqualTo(gender))
                 .verifyComplete();
     }
+
+    @Test
+    void shouldReturnUserWithContextUri() {
+        // given
+        final ProfileService testable = TestableBuilder.instance().build();
+
+        final CreateUserInfo payload = CreateUserInfoFaker.create()
+                .withId("miku")
+                .get();
+        // when
+        testable.createUser(payload)
+                .as(StepVerifier::create)
+                // then
+                .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
+                .verifyComplete();
+    }
 }
