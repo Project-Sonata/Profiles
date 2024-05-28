@@ -20,4 +20,13 @@ public interface R2dbcProfileRepositoryDelegate extends R2dbcRepository<UserProf
      */
     Mono<UserProfileEntity> findByPublicId(@NotNull String publicId);
 
+    /**
+     * Finds a {@code UserProfileEntity} by its public ID or email.
+     *
+     * @param publicId the public ID of the user profile, must not be  ull
+     * @param email    the email of the user profile, must not be null
+     * @return a {@code Mono} emitting the found {@code UserProfileEntity}, or an empty {@code Mono} if no user profile is found
+     */
+    @NotNull
+    Mono<UserProfileEntity> findByPublicIdOrEmail(@NotNull String publicId, @NotNull String email);
 }

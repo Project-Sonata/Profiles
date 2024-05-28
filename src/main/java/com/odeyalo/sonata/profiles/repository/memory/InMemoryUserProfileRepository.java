@@ -7,10 +7,7 @@ import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -45,6 +42,19 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
                 .map(Map.Entry::getValue)
                 .filter(it -> Objects.equals(it.getPublicId(), publicId))
                 .next();
+    }
+
+    @Override
+    public @NotNull Mono<UserProfileEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
+        return findByPublicId(publicId)
+                .switchIfEmpty(Mono.defer(() -> {
+                            Optional<UserProfileEntity> maybeUser = cache.values().stream()
+                                    .filter(it -> Objects.equals(it.getEmail(), email))
+                                    .findFirst();
+                            return Mono.justOrEmpty(maybeUser);
+                        })
+                );
+
     }
 
     @Override

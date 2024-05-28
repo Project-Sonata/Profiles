@@ -1,24 +1,16 @@
 package com.odeyalo.sonata.profiles.service;
 
-import com.odeyalo.sonata.profiles.config.mapper.Converters;
-import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
-import com.odeyalo.sonata.profiles.model.UserProfile;
-import com.odeyalo.sonata.profiles.repository.memory.InMemoryUserProfileRepository;
-import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileFaker;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.odeyalo.sonata.profiles.model.Gender.FEMALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProfileServiceTest {
+class FetchUserProfileInfoTest extends UserProfileServiceTest {
 
     @Test
     void shouldReturnProfileOfTheUser() {
@@ -144,44 +136,5 @@ class ProfileServiceTest {
         testable.getProfileForUser("miku")
                 .as(StepVerifier::create)
                 .verifyComplete();
-    }
-
-    static final class TestableBuilder {
-        private final List<UserProfileEntity> predefinedEntities = new ArrayList<>();
-
-        public static TestableBuilder instance() {
-            return new TestableBuilder();
-        }
-
-        public TestableBuilder withProfiles(final UserProfile... profiles) {
-
-            final var entities = Arrays.stream(profiles)
-                    .map(TestableBuilder::toUserProfileEntity)
-                    .toList();
-
-            predefinedEntities.addAll(entities);
-
-            return this;
-        }
-
-        public ProfileService build() {
-            final InMemoryUserProfileRepository repository =  InMemoryUserProfileRepository.withPredefinedEntities(predefinedEntities);
-            final UserProfileMapper userProfileMapper = new Converters().userProfileMapper();
-
-            return new ProfileService(repository, userProfileMapper);
-        }
-
-        // Don't like stuff like this in tests, change it by using Adapter?
-        private static UserProfileEntity toUserProfileEntity(final UserProfile profile) {
-            return UserProfileEntity.builder()
-                    .publicId(profile.getId())
-                    .displayName(profile.getDisplayName())
-                    .email(profile.getEmail())
-                    .birthdate(profile.getBirthdate())
-                    .contextUri(profile.getContextUri())
-                    .country(profile.getCountry())
-                    .gender(profile.getGender())
-                    .build();
-        }
     }
 }

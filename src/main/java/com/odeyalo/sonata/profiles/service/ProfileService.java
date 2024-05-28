@@ -1,5 +1,7 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
@@ -21,5 +23,31 @@ public final class ProfileService {
     public Mono<UserProfile> getProfileForUser(final String userId) {
         return profileRepository.findByPublicId(userId)
                 .map(userProfileMapper::toUserProfile);
+    }
+
+    @NotNull
+    public Mono<UserProfile> createUser(final CreateUserInfo userInfo) {
+        final var userProfile = toUserProfileEntity(userInfo);
+
+        Mono<UserProfile> saveUser = profileRepository.save(userProfile)
+                .map(userProfileMapper::toUserProfile);
+
+        return profileRepository.findByPublicIdOrEmail(userInfo.getId().value(), userInfo.getEmail().value())
+                .flatMap(existingUser -> Mono.<UserProfile> error(UserAlreadyExistException.withCustomMessage("A user with a given ID already exist")))
+                .switchIfEmpty(saveUser);
+    }
+
+    @NotNull
+    private static UserProfileEntity toUserProfileEntity(final CreateUserInfo userInfo) {
+        // maybe move this to mapstruct converter but i am not sure about it
+        return UserProfileEntity.builder()
+                .publicId(userInfo.getId().value())
+                .email(userInfo.getEmail().value())
+                .contextUri("sonata:user:" + userInfo.getId().value())
+                .country(userInfo.getCountryCode())
+                .birthdate(userInfo.getBirthdate().value())
+                .displayName(userInfo.getUsername().value())
+                .gender(userInfo.getGender())
+                .build();
     }
 }
