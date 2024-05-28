@@ -28,6 +28,11 @@ public final class R2dbcUserProfileRepository implements UserProfileRepository {
     }
 
     @Override
+    public @NotNull Mono<UserProfileEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
+        return delegate.findByPublicIdOrEmail(publicId, email);
+    }
+
+    @Override
     public @NotNull <S extends UserProfileEntity> Mono<S> save(@NotNull final S entity) {
         return delegate.save(entity);
     }
