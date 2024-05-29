@@ -1,6 +1,7 @@
 package com.odeyalo.sonata.profiles.service;
 
 import com.odeyalo.sonata.profiles.config.mapper.Converters;
+import com.odeyalo.sonata.profiles.entity.BasicUserInfo;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.memory.InMemoryUserProfileRepository;
@@ -43,11 +44,15 @@ public abstract class UserProfileServiceTest {
         // Don't like stuff like this in tests, change it by using Adapter?
         private static UserProfileEntity toUserProfileEntity(final UserProfile profile) {
             return UserProfileEntity.builder()
-                    .publicId(profile.getId())
+                    .userInfo(
+                            BasicUserInfo.builder()
+                                    .publicId(profile.getId())
+                                    .contextUri(profile.getContextUri())
+                                    .build()
+                    )
                     .displayName(profile.getDisplayName())
                     .email(profile.getEmail())
                     .birthdate(profile.getBirthdate())
-                    .contextUri(profile.getContextUri())
                     .country(profile.getCountry())
                     .gender(profile.getGender())
                     .build();

@@ -40,7 +40,7 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
     public @NotNull Mono<UserProfileEntity> findByPublicId(@NotNull final String publicId) {
         return Flux.fromStream(cache.entrySet().stream())
                 .map(Map.Entry::getValue)
-                .filter(it -> Objects.equals(it.getPublicId(), publicId))
+                .filter(it -> Objects.equals(it.getUserInfo().getPublicId(), publicId))
                 .next();
     }
 

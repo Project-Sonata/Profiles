@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.entity.BasicUserInfo;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.UserProfile;
@@ -40,10 +41,14 @@ public final class ProfileService {
     @NotNull
     private static UserProfileEntity toUserProfileEntity(final CreateUserInfo userInfo) {
         // maybe move this to mapstruct converter but i am not sure about it
-        return UserProfileEntity.builder()
+        final BasicUserInfo userEntity = BasicUserInfo.builder()
                 .publicId(userInfo.getId().value())
-                .email(userInfo.getEmail().value())
                 .contextUri("sonata:user:" + userInfo.getId().value())
+                .build();
+
+        return UserProfileEntity.builder()
+                .userInfo(userEntity)
+                .email(userInfo.getEmail().value())
                 .country(userInfo.getCountryCode())
                 .birthdate(userInfo.getBirthdate().value())
                 .displayName(userInfo.getUsername().value())

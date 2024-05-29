@@ -57,7 +57,7 @@ class R2dbcUserProfileRepositoryTest {
         //noinspection DataFlowIssue there is no way that after save ID will be null
         testable.findById(saved.getId())
                 .as(StepVerifier::create)
-                .assertNext(it -> assertThat(it.getPublicId()).isEqualTo("miku"))
+                .assertNext(it -> assertThat(it.getUserInfo().getPublicId()).isEqualTo("miku"))
                 .verifyComplete();
     }
 
@@ -171,7 +171,7 @@ class R2dbcUserProfileRepositoryTest {
         //noinspection DataFlowIssue there is no way that after save ID will be null
         testable.findById(saved.getId())
                 .as(StepVerifier::create)
-                .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
+                .assertNext(it -> assertThat(it.getUserInfo().getContextUri()).isEqualTo("sonata:user:miku"))
                 .verifyComplete();
     }
 

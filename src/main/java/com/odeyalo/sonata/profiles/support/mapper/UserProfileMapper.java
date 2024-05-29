@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserProfileMapper {
 
-    @Mapping(target = "id", source = "publicId")
+    @Mapping(target = "id", source = "userInfo.publicId")
     UserProfile toUserProfile(UserProfileEntity source);
 
 }

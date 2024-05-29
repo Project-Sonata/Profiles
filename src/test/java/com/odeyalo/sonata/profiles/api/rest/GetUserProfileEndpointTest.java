@@ -1,6 +1,7 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import com.odeyalo.sonata.profiles.entity.BasicUserInfo;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
 import org.jetbrains.annotations.NotNull;
@@ -40,13 +41,17 @@ class GetUserProfileEndpointTest {
         @BeforeEach
         void setUp() {
             final UserProfileEntity profile = UserProfileEntity.builder()
-                    .publicId(EXISTING_USER_ID)
+                    .userInfo(
+                            BasicUserInfo.builder()
+                                    .publicId(EXISTING_USER_ID)
+                                    .contextUri("sonata:user:miku")
+                                    .build()
+                    )
                     .gender(FEMALE)
                     .birthdate(LocalDate.of(2004, Month.MAY, 22))
                     .country("JP")
                     .displayName("odeyalo")
                     .email("odeyalo@gmail.com")
-                    .contextUri("sonata:user:miku")
                     .build();
             // ENHANCE: good candidate for refactoring
             profileRepository.save(profile).block();

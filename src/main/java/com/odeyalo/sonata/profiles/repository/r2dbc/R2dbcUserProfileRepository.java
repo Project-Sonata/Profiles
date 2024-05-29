@@ -24,12 +24,12 @@ public final class R2dbcUserProfileRepository implements UserProfileRepository {
 
     @Override
     public @NotNull Mono<UserProfileEntity> findByPublicId(@NotNull final String publicId) {
-        return delegate.findByPublicId(publicId);
+        return delegate.findByUserInfoPublicId(publicId);
     }
 
     @Override
     public @NotNull Mono<UserProfileEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
-        return delegate.findByPublicIdOrEmail(publicId, email);
+        return delegate.findByUserInfoPublicIdOrEmail(publicId, email);
     }
 
     @Override
