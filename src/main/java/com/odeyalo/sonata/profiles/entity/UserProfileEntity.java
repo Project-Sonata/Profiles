@@ -25,9 +25,6 @@ public class UserProfileEntity {
     @Column("display_name")
     @NotNull
     String displayName;
-    @Column("email")
-    @NotNull
-    String email;
     // ENHANCE: Not sure about moving it to separated class called Country. I don't want to introduce additional complexity to code
     // ENHANCE: Any way if there is any need it will be easily decoupled
     @Column("country")
@@ -42,14 +39,12 @@ public class UserProfileEntity {
     @Transient
     BasicUserInfo userInfo;
     @Column("user_id")
-    @NotNull
     Long userId;
 
     @PersistenceCreator
-    public UserProfileEntity(final Long id, @NotNull final String displayName, @NotNull final String email, @NotNull final String country, @NotNull final LocalDate birthdate, @NotNull final Gender gender, @NotNull final Long userId) {
+    public UserProfileEntity(final Long id, @NotNull final String displayName, @NotNull final String country, @NotNull final LocalDate birthdate, @NotNull final Gender gender, @NotNull final Long userId) {
         this.id = id;
         this.displayName = displayName;
-        this.email = email;
         this.country = country;
         this.birthdate = birthdate;
         this.gender = gender;

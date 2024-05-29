@@ -45,13 +45,13 @@ class GetUserProfileEndpointTest {
                             BasicUserInfo.builder()
                                     .publicId(EXISTING_USER_ID)
                                     .contextUri("sonata:user:miku")
+                                    .email("odeyalo@gmail.com")
                                     .build()
                     )
                     .gender(FEMALE)
                     .birthdate(LocalDate.of(2004, Month.MAY, 22))
                     .country("JP")
                     .displayName("odeyalo")
-                    .email("odeyalo@gmail.com")
                     .build();
             // ENHANCE: good candidate for refactoring
             profileRepository.save(profile).block();

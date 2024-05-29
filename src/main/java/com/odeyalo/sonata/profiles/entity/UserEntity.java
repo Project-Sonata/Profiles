@@ -28,15 +28,17 @@ public class UserEntity extends BasicUserInfo {
     @PersistenceCreator
     public UserEntity(@Nullable final Long id,
                       @NotNull final String publicId,
-                      @NotNull final String contextUri) {
-        super(id, publicId, contextUri);
+                      @NotNull final String contextUri,
+                      @NotNull final  String email) {
+        super(id, publicId, contextUri, email);
         this.profile = null;
     }
 
     public UserEntity(@NotNull final String publicId,
                       @NotNull final String contextUri,
+                      @NotNull final String email,
                       @NotNull final UserProfileEntity profile) {
-        super(null, publicId, contextUri);
+        super(null, publicId, contextUri, email);
         this.profile = profile;
     }
 

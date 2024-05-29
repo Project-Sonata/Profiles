@@ -12,7 +12,7 @@ import java.time.ZoneId;
 public final class UserProfileEntityFaker {
     private final UserProfileEntity.UserProfileEntityBuilder builder = UserProfileEntity.builder();
     private final Faker faker = Faker.instance();
-    private final BasicUserInfo.BasicUserInfoBuilder userInfoBuilder = BasicUserInfo.builder();
+    private final BasicUserInfo.BasicUserInfoBuilder<?, ?> userInfoBuilder = BasicUserInfo.builder();
 
     public UserProfileEntityFaker() {
         final LocalDate birthdate = faker.date().birthday(18, 70)
@@ -22,11 +22,11 @@ public final class UserProfileEntityFaker {
         final String publicId = RandomStringUtils.randomAlphanumeric(22);
 
         userInfoBuilder.publicId(publicId)
-                .contextUri("sonata:user:" + publicId);
+                .contextUri("sonata:user:" + publicId)
+                .email(faker.internet().emailAddress());
 
         builder
                 .id(faker.random().nextLong(Long.MAX_VALUE))
-                .email(faker.internet().emailAddress())
                 .userInfo(userInfoBuilder.build())
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
@@ -61,7 +61,10 @@ public final class UserProfileEntityFaker {
     }
 
     public UserProfileEntityFaker withEmail(final String email) {
-        builder.email(email);
+        final BasicUserInfo userInfo = userInfoBuilder.email(email).build();
+
+        builder.userInfo(userInfo);
+
         return this;
     }
 

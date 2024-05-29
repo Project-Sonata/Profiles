@@ -13,4 +13,6 @@ public interface R2dbcUserRepositoryDelegate extends R2dbcRepository<UserEntity,
 
     Mono<UserEntity> findByContextUri(@NotNull String contextUri);
 
+    Mono<UserEntity> findByPublicIdOrEmail(@NotNull String publicId, @NotNull String email);
+
 }

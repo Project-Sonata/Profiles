@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 public interface UserProfileMapper {
 
     @Mapping(target = "id", source = "userInfo.publicId")
+    @Mapping(target = "contextUri", source = "userInfo.contextUri")
+    @Mapping(target = "email", source = "userInfo.email")
     UserProfile toUserProfile(UserProfileEntity source);
 
 }

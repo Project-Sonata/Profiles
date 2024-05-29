@@ -23,8 +23,8 @@ public final class R2dbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Mono<UserEntity> findByContextUri(@NotNull final String contextUri) {
-        return delegate.findByContextUri(contextUri);
+    public @NotNull Mono<UserEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
+        return delegate.findByPublicIdOrEmail(publicId, email);
     }
 
     @Override

@@ -89,7 +89,7 @@ class R2dbcUserProfileRepositoryTest {
         //noinspection DataFlowIssue there is no way that after save ID will be null
         testable.findById(saved.getId())
                 .as(StepVerifier::create)
-                .assertNext(it -> assertThat(it.getEmail()).isEqualTo("miku@gmail.com"))
+                .assertNext(it -> assertThat(it.getUserInfo().getEmail()).isEqualTo("miku@gmail.com"))
                 .verifyComplete();
     }
     @Test

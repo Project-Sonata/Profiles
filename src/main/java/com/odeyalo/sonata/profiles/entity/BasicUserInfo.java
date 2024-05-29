@@ -13,19 +13,20 @@ import org.springframework.data.relational.core.mapping.Column;
 @FieldDefaults(level = AccessLevel.PROTECTED, makeFinal = true)
 @AllArgsConstructor
 @SuperBuilder(toBuilder = true)
+@With
 public sealed class BasicUserInfo permits UserEntity {
     @Id
-    @With
     Long id;
     /**
      * Public ID that can be used to access the user's info
      */
     @Column("sonata_id")
     @NotNull
-    @With
     String publicId;
     @Column("context_uri")
     @NotNull
-    @With
     String contextUri;
+    @Column("email")
+    @NotNull
+    String email;
 }
