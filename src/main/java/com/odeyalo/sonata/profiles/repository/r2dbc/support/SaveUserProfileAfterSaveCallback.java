@@ -12,6 +12,9 @@ import org.springframework.data.relational.core.sql.SqlIdentifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+/**
+ * Saves a {@link UserProfileEntity} and associate it with {@link UserEntity}
+ */
 @Component
 public final class SaveUserProfileAfterSaveCallback implements AfterSaveCallback<UserEntity> {
     private final R2dbcProfileRepositoryDelegate profileRepository;
@@ -25,7 +28,9 @@ public final class SaveUserProfileAfterSaveCallback implements AfterSaveCallback
     public Publisher<UserEntity> onAfterSave(@NotNull final UserEntity entity,
                                              @NotNull final OutboundRow outboundRow,
                                              @NotNull final SqlIdentifier table) {
+
         final UserProfileEntity userProfile = entity.getProfile();
+
         Assert.notNull(userProfile, () -> "A user must have profile!");
 
         final UserProfileEntity savingTarget = userProfile.withUserId(entity.getId());

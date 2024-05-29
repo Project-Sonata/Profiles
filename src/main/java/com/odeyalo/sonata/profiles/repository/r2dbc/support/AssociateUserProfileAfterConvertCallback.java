@@ -9,6 +9,9 @@ import org.springframework.data.r2dbc.mapping.event.AfterConvertCallback;
 import org.springframework.data.relational.core.sql.SqlIdentifier;
 import org.springframework.stereotype.Component;
 
+/**
+ * R2DBC converter that invoked after {@link UserEntity} has been converted and used to set a {@link com.odeyalo.sonata.profiles.entity.UserProfileEntity} associated with retrieved user
+ */
 @Component
 public final class AssociateUserProfileAfterConvertCallback implements AfterConvertCallback<UserEntity> {
     private final R2dbcProfileRepositoryDelegate userProfileRepository;
