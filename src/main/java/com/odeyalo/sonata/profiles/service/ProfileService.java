@@ -1,9 +1,10 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.entity.UserEntity;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.UserProfile;
-import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
+import com.odeyalo.sonata.profiles.repository.UserRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -11,43 +12,53 @@ import reactor.core.publisher.Mono;
 
 @Service
 public final class ProfileService {
-    private final UserProfileRepository profileRepository;
+    private final UserRepository userRepository;
     private final UserProfileMapper userProfileMapper;
 
-    public ProfileService(final UserProfileRepository profileRepository, final UserProfileMapper userProfileMapper) {
-        this.profileRepository = profileRepository;
+    public ProfileService(final UserRepository userRepository,
+                          final UserProfileMapper userProfileMapper) {
         this.userProfileMapper = userProfileMapper;
+        this.userRepository = userRepository;
     }
 
     @NotNull
     public Mono<UserProfile> getProfileForUser(final String userId) {
-        return profileRepository.findByPublicId(userId)
+        return userRepository.findByPublicId(userId)
+                .map(UserEntity::getProfile)
                 .map(userProfileMapper::toUserProfile);
     }
 
     @NotNull
     public Mono<UserProfile> createUser(final CreateUserInfo userInfo) {
-        final var userProfile = toUserProfileEntity(userInfo);
+        final var user = toUserEntity(userInfo);
 
-        Mono<UserProfile> saveUser = profileRepository.save(userProfile)
+        Mono<UserProfile> saveUser = userRepository.save(user)
+                .map(UserEntity::getProfile)
                 .map(userProfileMapper::toUserProfile);
 
-        return profileRepository.findByPublicIdOrEmail(userInfo.getId().value(), userInfo.getEmail().value())
+        return userRepository.findByPublicIdOrEmail(userInfo.getId().value(), userInfo.getEmail().value())
                 .flatMap(existingUser -> Mono.<UserProfile> error(UserAlreadyExistException.withCustomMessage("A user with a given ID already exist")))
-                .switchIfEmpty(saveUser);
+                .switchIfEmpty(saveUser)
+                .log();
     }
 
     @NotNull
-    private static UserProfileEntity toUserProfileEntity(final CreateUserInfo userInfo) {
+    private static UserEntity toUserEntity(final CreateUserInfo userInfo) {
         // maybe move this to mapstruct converter but i am not sure about it
-        return UserProfileEntity.builder()
+        final UserEntity userEntity = UserEntity.builder()
                 .publicId(userInfo.getId().value())
                 .email(userInfo.getEmail().value())
                 .contextUri("sonata:user:" + userInfo.getId().value())
+                .build();
+
+        UserProfileEntity userProfile = UserProfileEntity.builder()
+                .userInfo(userEntity)
                 .country(userInfo.getCountryCode())
                 .birthdate(userInfo.getBirthdate().value())
                 .displayName(userInfo.getUsername().value())
                 .gender(userInfo.getGender())
                 .build();
+
+        return userEntity.withProfile(userProfile);
     }
 }

@@ -1,8 +1,10 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
+import com.odeyalo.sonata.profiles.entity.UserEntity;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
+import com.odeyalo.sonata.profiles.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ class GetUserProfileEndpointTest {
      * ENHANCE: THERE IS A DATA LAYER IN INTEGRATION TEST FOR WEB. I THINK IT'S A BAD PRACTICE. SHOULD CHANGE IT BUT HOW?
      */
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     UserProfileRepository profileRepository;
 
     @Nested
@@ -39,22 +44,28 @@ class GetUserProfileEndpointTest {
 
         @BeforeEach
         void setUp() {
-            final UserProfileEntity profile = UserProfileEntity.builder()
+            final UserEntity user = UserEntity.builder()
                     .publicId(EXISTING_USER_ID)
+                    .contextUri("sonata:user:miku")
+                    .email("odeyalo@gmail.com")
+                    .build();
+
+            final UserProfileEntity profile = UserProfileEntity.builder()
+                    .userInfo(user)
                     .gender(FEMALE)
                     .birthdate(LocalDate.of(2004, Month.MAY, 22))
                     .country("JP")
                     .displayName("odeyalo")
-                    .email("odeyalo@gmail.com")
-                    .contextUri("sonata:user:miku")
                     .build();
+
             // ENHANCE: good candidate for refactoring
-            profileRepository.save(profile).block();
+            userRepository.save(user.withProfile(profile)).block();
         }
 
         @AfterEach
         void tearDown() {
             profileRepository.deleteAll().block();
+            userRepository.deleteAll().block();
         }
 
         @Test

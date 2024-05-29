@@ -1,56 +1,73 @@
 package com.odeyalo.sonata.profiles.repository.memory;
 
-import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
-import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
+import com.odeyalo.sonata.profiles.entity.UserEntity;
+import com.odeyalo.sonata.profiles.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-public final class InMemoryUserProfileRepository implements UserProfileRepository {
-    private final ConcurrentMap<Long, UserProfileEntity> cache = new ConcurrentHashMap<>();
+public final class InMemoryUserRepository implements UserRepository {
+    private final ConcurrentMap<Long, UserEntity> cache = new ConcurrentHashMap<>();
     // Do not move it to separate interface such as IdGenerator to make code more simple.
     private final AtomicLong idCounter = new AtomicLong();
 
-    public InMemoryUserProfileRepository() {}
+    public InMemoryUserRepository() {}
 
-    public InMemoryUserProfileRepository(UserProfileEntity... entities) {
+    public InMemoryUserRepository(UserEntity... entities) {
         // Do not copy code from saveAll method, just block it. Any way it is used as in-memory stuff and really fast.
         saveAll(Arrays.asList(entities)).blockLast();
     }
 
-    public InMemoryUserProfileRepository(final List<UserProfileEntity> predefinedEntities) {
+    public InMemoryUserRepository(final List<UserEntity> predefinedEntities) {
         saveAll(predefinedEntities).blockLast();
     }
 
-    public static InMemoryUserProfileRepository withPredefinedEntities(UserProfileEntity... entities) {
-        return new InMemoryUserProfileRepository(entities);
+    public static InMemoryUserRepository withPredefinedEntities(UserEntity... entities) {
+        return new InMemoryUserRepository(entities);
     }
 
-    public static InMemoryUserProfileRepository withPredefinedEntities(final List<UserProfileEntity> predefinedEntities) {
-        return new InMemoryUserProfileRepository(predefinedEntities);
+    public static InMemoryUserRepository withPredefinedEntities(final List<UserEntity> predefinedEntities) {
+        return new InMemoryUserRepository(predefinedEntities);
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findByUserId(@NotNull final Long userId) {
-        Optional<UserProfileEntity> maybeUser = cache.values()
-                .stream().filter(it -> Objects.equals(it.getUserId(), userId))
+    public Mono<UserEntity> findByPublicId(@NotNull final String publicId) {
+        final Optional<UserEntity> maybeUser = cache.values().stream()
+                .filter(it -> Objects.equals(publicId, it.getPublicId()))
                 .findFirst();
 
         return Mono.justOrEmpty(maybeUser);
     }
 
     @Override
-    public @NotNull <S extends UserProfileEntity> Mono<S> save(@NotNull final S entity) {
+    public @NotNull Mono<UserEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
+        return findByPublicId(publicId)
+                .switchIfEmpty(Mono.defer(() -> {
+                            final Optional<UserEntity> maybeUser = cache.values().stream()
+                                    .filter(it -> Objects.equals(it.getEmail(), email))
+                                    .findFirst();
+                            return Mono.justOrEmpty(maybeUser);
+                        })
+                );
+
+    }
+
+    @Override
+    public @NotNull <S extends UserEntity> Mono<S> save(@NotNull final S entity) {
+        //noinspection DuplicatedCode
         return Mono.fromCallable(() -> {
             if (entity.getId() == null) {
                 final long id = idCounter.incrementAndGet();
-                // we know that the UserProfileEntity is immutable and can't be extended. Safely cast it
+                // we know that the UserEntity is immutable and can't be extended. Safely cast it
                 @SuppressWarnings("unchecked")
                 S toSave = (S) entity.withId(id);
 
@@ -65,25 +82,25 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
     }
 
     @Override
-    public @NotNull <S extends UserProfileEntity> Flux<S> saveAll(@NotNull final Iterable<S> entities) {
+    public @NotNull <S extends UserEntity> Flux<S> saveAll(@NotNull final Iterable<S> entities) {
         return Flux.fromIterable(entities)
                 .concatMap(this::save);
     }
 
     @Override
-    public @NotNull <S extends UserProfileEntity> Flux<S> saveAll(@NotNull final Publisher<S> entityStream) {
+    public @NotNull <S extends UserEntity> Flux<S> saveAll(@NotNull final Publisher<S> entityStream) {
         return Flux.from(entityStream)
                 .concatMap(this::save);
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findById(@NotNull final Long id) {
+    public @NotNull Mono<UserEntity> findById(@NotNull final Long id) {
         return Mono.fromCallable(() -> cache.get(id));
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findById(@NotNull final Publisher<Long> idPublisher) {
-        return Mono.from(idPublisher)
+    public @NotNull Mono<UserEntity> findById(@NotNull final Publisher<Long> id) {
+        return Mono.from(id)
                 .flatMap(this::findById);
     }
 
@@ -95,26 +112,26 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
     }
 
     @Override
-    public Mono<Boolean> existsById(@NotNull final Publisher<Long> idPublisher) {
-        return Mono.from(idPublisher)
+    public Mono<Boolean> existsById(@NotNull final Publisher<Long> id) {
+        return Mono.from(id)
                 .flatMap(this::existsById);
     }
 
     @Override
-    public @NotNull Flux<UserProfileEntity> findAll() {
+    public @NotNull Flux<UserEntity> findAll() {
         return Flux.fromIterable(
                 cache.values()
         );
     }
 
     @Override
-    public @NotNull Flux<UserProfileEntity> findAllById(@NotNull final Iterable<Long> ids) {
+    public @NotNull Flux<UserEntity> findAllById(@NotNull final Iterable<Long> ids) {
         return Flux.fromIterable(ids)
                 .concatMap(this::findById);
     }
 
     @Override
-    public @NotNull Flux<UserProfileEntity> findAllById(@NotNull final Publisher<Long> idStream) {
+    public @NotNull Flux<UserEntity> findAllById(@NotNull final Publisher<Long> idStream) {
         return Flux.from(idStream)
                 .concatMap(this::findById);
     }
@@ -132,13 +149,13 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
     }
 
     @Override
-    public @NotNull Mono<Void> deleteById(@NotNull final Publisher<Long> idPublisher) {
-        return Mono.from(idPublisher)
+    public @NotNull Mono<Void> deleteById(@NotNull final Publisher<Long> id) {
+        return Mono.from(id)
                 .flatMap(this::deleteById);
     }
 
     @Override
-    public @NotNull Mono<Void> delete(@NotNull final UserProfileEntity entity) {
+    public @NotNull Mono<Void> delete(@NotNull final UserEntity entity) {
         return deleteById(entity.getId());
     }
 
@@ -150,17 +167,17 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
     }
 
     @Override
-    public @NotNull Mono<Void> deleteAll(@NotNull final Iterable<? extends UserProfileEntity> entities) {
+    public @NotNull Mono<Void> deleteAll(@NotNull final Iterable<? extends UserEntity> entities) {
         return Flux.fromIterable(entities)
-                .map(UserProfileEntity::getId)
+                .map(UserEntity::getId)
                 .flatMap(this::deleteById)
                 .then();
     }
 
     @Override
-    public @NotNull Mono<Void> deleteAll(@NotNull final Publisher<? extends UserProfileEntity> entityStream) {
+    public @NotNull Mono<Void> deleteAll(@NotNull final Publisher<? extends UserEntity> entityStream) {
         return Flux.from(entityStream)
-                .map(UserProfileEntity::getId)
+                .map(UserEntity::getId)
                 .flatMap(this::deleteById)
                 .then();
     }

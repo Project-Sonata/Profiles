@@ -1,54 +1,54 @@
 package com.odeyalo.sonata.profiles.repository.r2dbc;
 
-import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
-import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
-import com.odeyalo.sonata.profiles.repository.r2dbc.delegate.R2dbcProfileRepositoryDelegate;
+import com.odeyalo.sonata.profiles.entity.UserEntity;
+import com.odeyalo.sonata.profiles.repository.UserRepository;
+import com.odeyalo.sonata.profiles.repository.r2dbc.delegate.R2dbcUserRepositoryDelegate;
 import org.jetbrains.annotations.NotNull;
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of {@link UserProfileRepository} that uses R2DBC to work with database
- *
- * @see UserProfileRepository
- */
 @Component
-public final class R2dbcUserProfileRepository implements UserProfileRepository {
-    private final R2dbcProfileRepositoryDelegate delegate;
+public final class R2dbcUserRepository implements UserRepository {
+    private final R2dbcUserRepositoryDelegate delegate;
 
-    public R2dbcUserProfileRepository(final R2dbcProfileRepositoryDelegate delegate) {
+    public R2dbcUserRepository(final R2dbcUserRepositoryDelegate delegate) {
         this.delegate = delegate;
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findByUserId(@NotNull final Long userId) {
-        return delegate.findByUserId(userId);
+    public Mono<UserEntity> findByPublicId(@NotNull final String publicId) {
+        return delegate.findByPublicId(publicId);
     }
 
     @Override
-    public @NotNull <S extends UserProfileEntity> Mono<S> save(@NotNull final S entity) {
+    public @NotNull Mono<UserEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
+        return delegate.findByPublicIdOrEmail(publicId, email);
+    }
+
+    @Override
+    public @NotNull <S extends UserEntity> Mono<S> save(@NotNull final S entity) {
         return delegate.save(entity);
     }
 
     @Override
-    public @NotNull <S extends UserProfileEntity> Flux<S> saveAll(@NotNull final Iterable<S> entities) {
+    public @NotNull <S extends UserEntity> Flux<S> saveAll(@NotNull final Iterable<S> entities) {
         return delegate.saveAll(entities);
     }
 
     @Override
-    public @NotNull <S extends UserProfileEntity> Flux<S> saveAll(@NotNull final Publisher<S> entityStream) {
+    public @NotNull <S extends UserEntity> Flux<S> saveAll(@NotNull final Publisher<S> entityStream) {
         return delegate.saveAll(entityStream);
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findById(@NotNull final Long id) {
+    public @NotNull Mono<UserEntity> findById(@NotNull final Long id) {
         return delegate.findById(id);
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findById(@NotNull final Publisher<Long> id) {
+    public @NotNull Mono<UserEntity> findById(@NotNull final Publisher<Long> id) {
         return delegate.findById(id);
     }
 
@@ -63,17 +63,17 @@ public final class R2dbcUserProfileRepository implements UserProfileRepository {
     }
 
     @Override
-    public @NotNull Flux<UserProfileEntity> findAll() {
+    public @NotNull Flux<UserEntity> findAll() {
         return delegate.findAll();
     }
 
     @Override
-    public @NotNull Flux<UserProfileEntity> findAllById(@NotNull final Iterable<Long> ids) {
+    public @NotNull Flux<UserEntity> findAllById(@NotNull final Iterable<Long> ids) {
         return delegate.findAllById(ids);
     }
 
     @Override
-    public @NotNull Flux<UserProfileEntity> findAllById(@NotNull final Publisher<Long> idStream) {
+    public @NotNull Flux<UserEntity> findAllById(@NotNull final Publisher<Long> idStream) {
         return delegate.findAllById(idStream);
     }
 
@@ -93,7 +93,7 @@ public final class R2dbcUserProfileRepository implements UserProfileRepository {
     }
 
     @Override
-    public @NotNull Mono<Void> delete(@NotNull final UserProfileEntity entity) {
+    public @NotNull Mono<Void> delete(@NotNull final UserEntity entity) {
         return delegate.delete(entity);
     }
 
@@ -103,12 +103,12 @@ public final class R2dbcUserProfileRepository implements UserProfileRepository {
     }
 
     @Override
-    public @NotNull Mono<Void> deleteAll(@NotNull final Iterable<? extends UserProfileEntity> entities) {
+    public @NotNull Mono<Void> deleteAll(@NotNull final Iterable<? extends UserEntity> entities) {
         return delegate.deleteAll(entities);
     }
 
     @Override
-    public @NotNull Mono<Void> deleteAll(@NotNull final Publisher<? extends UserProfileEntity> entityStream) {
+    public @NotNull Mono<Void> deleteAll(@NotNull final Publisher<? extends UserEntity> entityStream) {
         return delegate.deleteAll(entityStream);
     }
 
