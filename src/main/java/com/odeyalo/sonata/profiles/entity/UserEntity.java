@@ -8,14 +8,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.data.annotation.PersistenceCreator;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Value
-@Table("users")
 @SuperBuilder(toBuilder = true)
 public class UserEntity extends BasicUserInfo {
     /**

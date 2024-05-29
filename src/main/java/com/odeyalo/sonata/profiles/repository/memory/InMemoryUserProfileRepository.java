@@ -37,24 +37,12 @@ public final class InMemoryUserProfileRepository implements UserProfileRepositor
     }
 
     @Override
-    public @NotNull Mono<UserProfileEntity> findByPublicId(@NotNull final String publicId) {
-        return Flux.fromStream(cache.entrySet().stream())
-                .map(Map.Entry::getValue)
-                .filter(it -> Objects.equals(it.getUserInfo().getPublicId(), publicId))
-                .next();
-    }
+    public @NotNull Mono<UserProfileEntity> findByUserId(@NotNull final Long userId) {
+        Optional<UserProfileEntity> maybeUser = cache.values()
+                .stream().filter(it -> Objects.equals(it.getUserId(), userId))
+                .findFirst();
 
-    @Override
-    public @NotNull Mono<UserProfileEntity> findByPublicIdOrEmail(@NotNull final String publicId, @NotNull final String email) {
-        return findByPublicId(publicId)
-                .switchIfEmpty(Mono.defer(() -> {
-                            Optional<UserProfileEntity> maybeUser = cache.values().stream()
-                                    .filter(it -> Objects.equals(it.getUserInfo().getEmail(), email))
-                                    .findFirst();
-                            return Mono.justOrEmpty(maybeUser);
-                        })
-                );
-
+        return Mono.justOrEmpty(maybeUser);
     }
 
     @Override

@@ -97,6 +97,11 @@ public final class UserProfileEntityFaker {
 
     public UserProfileEntityFaker withUserInfo(final BasicUserInfo userInfo) {
         builder.userInfo(userInfo);
+
+        if ( userInfo.getId() != null ) {
+            builder.userId(userInfo.getId());
+        }
+
         return this;
     }
 }

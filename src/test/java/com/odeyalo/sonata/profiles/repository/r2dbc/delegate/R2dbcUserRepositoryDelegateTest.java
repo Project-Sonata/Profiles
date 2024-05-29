@@ -38,6 +38,7 @@ class R2dbcUserRepositoryDelegateTest {
         final UserEntity user = UserEntity.builder()
                 .publicId("miku")
                 .contextUri("sonata:user:miku")
+                .email("miku@gmail.com")
                 .build();
 
         final UserProfileEntity userProfile = UserProfileEntityFaker.create()
@@ -61,6 +62,7 @@ class R2dbcUserRepositoryDelegateTest {
         final UserEntity user = UserEntity.builder()
                 .publicId("miku")
                 .contextUri("sonata:user:miku")
+                .email("miku@gmail.com")
                 .build();
 
         final UserProfileEntity userProfile = UserProfileEntityFaker.create()

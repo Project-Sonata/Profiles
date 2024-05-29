@@ -24,6 +24,7 @@ public final class ProfileService {
     @NotNull
     public Mono<UserProfile> getProfileForUser(final String userId) {
         return userRepository.findByPublicId(userId)
+                .log("user:")
                 .map(UserEntity::getProfile)
                 .map(userProfileMapper::toUserProfile);
     }
@@ -38,7 +39,8 @@ public final class ProfileService {
 
         return userRepository.findByPublicIdOrEmail(userInfo.getId().value(), userInfo.getEmail().value())
                 .flatMap(existingUser -> Mono.<UserProfile> error(UserAlreadyExistException.withCustomMessage("A user with a given ID already exist")))
-                .switchIfEmpty(saveUser);
+                .switchIfEmpty(saveUser)
+                .log();
     }
 
     @NotNull

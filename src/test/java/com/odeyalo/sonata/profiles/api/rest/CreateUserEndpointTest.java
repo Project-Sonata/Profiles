@@ -4,6 +4,7 @@ package com.odeyalo.sonata.profiles.api.rest;
 import com.odeyalo.sonata.profiles.api.dto.CreateUserInfoDto;
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
 import com.odeyalo.sonata.profiles.repository.UserProfileRepository;
+import com.odeyalo.sonata.profiles.repository.UserRepository;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Hooks;
 import testing.AutoConfigureProfileHttpOperations;
 import testing.ProfileHttpOperations;
 import testing.faker.CreateUserInfoDtoFaker;
@@ -39,9 +41,13 @@ class CreateUserEndpointTest {
     @Autowired
     UserProfileRepository userProfileRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @AfterEach
     void tearDown() {
         userProfileRepository.deleteAll().block();
+        userRepository.deleteAll().block();
     }
 
     @Test
@@ -66,6 +72,7 @@ class CreateUserEndpointTest {
 
     @Test
     void createdUserShouldBeSaved() {
+        Hooks.onOperatorDebug();
         final var body = CreateUserInfoDtoFaker.create()
                 .withId("miku")
                 .get();
