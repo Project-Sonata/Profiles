@@ -4,6 +4,7 @@ import com.odeyalo.sonata.profiles.entity.UserEntity;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
 import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.User;
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import com.odeyalo.sonata.profiles.repository.UserRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserMapper;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +23,8 @@ public final class UserService {
     }
 
     @NotNull
-    public Mono<User> findUser(@NotNull final String sonataUserId) {
-        return userRepository.findByPublicId(sonataUserId)
+    public Mono<User> findUser(final @NotNull UserId sonataUserId) {
+        return userRepository.findByPublicId(sonataUserId.value())
                 .map(userMapper::toUser);
     }
 

@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 import testing.faker.UserProfileFaker;
@@ -22,7 +23,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .expectNextCount(1)
                 .verifyComplete();
@@ -39,7 +40,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getDisplayName()).isEqualTo("NakanoMiku"))
                 .verifyComplete();
@@ -56,7 +57,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getCountry()).isEqualTo("JP"))
                 .verifyComplete();
@@ -73,7 +74,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getEmail()).isEqualTo("mikunakano@gmail.com"))
                 .verifyComplete();
@@ -90,7 +91,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2004-05-17"))
                 .verifyComplete();
@@ -106,7 +107,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getContextUri()).isEqualTo("sonata:user:miku"))
                 .verifyComplete();
@@ -123,7 +124,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
                 .withProfiles(userProfile)
                 .build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .assertNext(it -> assertThat(it.getGender()).isEqualTo(FEMALE))
                 .verifyComplete();
@@ -133,7 +134,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
     void shouldReturnNothingIfProfileDoesNoeExist() {
         final ProfileService testable = TestableBuilder.instance().build();
 
-        testable.getProfileForUser("miku")
+        testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
                 .verifyComplete();
     }

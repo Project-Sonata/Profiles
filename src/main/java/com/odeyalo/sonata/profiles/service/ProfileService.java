@@ -2,6 +2,7 @@ package com.odeyalo.sonata.profiles.service;
 
 import com.odeyalo.sonata.profiles.entity.UserEntity;
 import com.odeyalo.sonata.profiles.model.UserProfile;
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import com.odeyalo.sonata.profiles.repository.UserRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
 import org.jetbrains.annotations.NotNull;
@@ -20,8 +21,8 @@ public final class ProfileService {
     }
 
     @NotNull
-    public Mono<UserProfile> getProfileForUser(final String userId) {
-        return userRepository.findByPublicId(userId)
+    public Mono<UserProfile> getProfileForUser(final @NotNull UserId userId) {
+        return userRepository.findByPublicId(userId.value())
                 .map(UserEntity::getProfile)
                 .map(userProfileMapper::toUserProfile);
     }
