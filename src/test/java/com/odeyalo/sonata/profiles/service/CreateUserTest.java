@@ -4,6 +4,7 @@ package com.odeyalo.sonata.profiles.service;
 import com.odeyalo.sonata.profiles.exception.UserAlreadyExistException;
 import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.UserProfile;
+import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -47,7 +48,7 @@ class CreateUserTest extends UserServiceTest {
         testable.createUser(payload)
                 .as(StepVerifier::create)
                 // then
-                .assertNext(it -> assertThat(it.getProfile().getEmail()).isEqualTo("miku.nakano@gmail.com"))
+                .assertNext(it -> assertThat(it.getProfile().getEmail()).isEqualTo(Email.of("miku.nakano@gmail.com")))
                 .verifyComplete();
     }
 

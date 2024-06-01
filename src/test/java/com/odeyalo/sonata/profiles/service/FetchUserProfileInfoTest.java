@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.service;
 
+import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -76,7 +77,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
 
         testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
-                .assertNext(it -> assertThat(it.getEmail()).isEqualTo("mikunakano@gmail.com"))
+                .assertNext(it -> assertThat(it.getEmail()).isEqualTo(Email.of("mikunakano@gmail.com")))
                 .verifyComplete();
     }
 

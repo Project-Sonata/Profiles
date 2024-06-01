@@ -9,7 +9,10 @@ import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = CONSTRUCTOR,
-        uses = UserIdConverter.class)
+        uses = {
+                UserIdConverter.class,
+                EmailConverter.class
+        })
 public interface UserProfileMapper {
 
     @Mapping(target = "id", source = "userInfo.publicId")

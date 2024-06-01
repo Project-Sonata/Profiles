@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.model;
 
+import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
 import lombok.Builder;
 import lombok.Value;
@@ -17,7 +18,7 @@ public class UserProfile {
     @NotNull
     String country;
     @NotNull
-    String email;
+    Email email;
     @NotNull
     LocalDate birthdate;
     @NotNull
