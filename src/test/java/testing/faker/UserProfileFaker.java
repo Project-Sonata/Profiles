@@ -3,6 +3,9 @@ package testing.faker;
 import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.UserProfile;
+import com.odeyalo.sonata.profiles.model.core.Birthdate;
+import com.odeyalo.sonata.profiles.model.core.Email;
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
@@ -22,11 +25,11 @@ public final class UserProfileFaker {
         final String id = RandomStringUtils.randomAlphanumeric(22);
 
         builder
-                .id(id)
+                .id(UserId.fromString(id))
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
-                .email(faker.internet().emailAddress())
-                .birthdate(birthdate)
+                .email(Email.of(faker.internet().emailAddress()))
+                .birthdate(Birthdate.of(birthdate))
                 .contextUri("sonata:user:" + id)
                 .gender(faker.options().option(Gender.class));
     }
@@ -36,7 +39,7 @@ public final class UserProfileFaker {
     }
 
     public UserProfileFaker withPublicId(final String publicId) {
-        builder.id(publicId);
+        builder.id(UserId.fromString(publicId));
         builder.contextUri("sonata:user:" + publicId);
         return this;
     }
@@ -52,12 +55,12 @@ public final class UserProfileFaker {
     }
 
     public UserProfileFaker withEmail(final String email) {
-        builder.email(email);
+        builder.email(Email.of(email));
         return this;
     }
 
     public UserProfileFaker withBirthdate(final LocalDate birthdate) {
-        builder.birthdate(birthdate);
+        builder.birthdate(Birthdate.of(birthdate));
         return this;
     }
 

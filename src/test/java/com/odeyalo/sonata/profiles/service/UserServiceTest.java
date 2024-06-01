@@ -3,31 +3,29 @@ package com.odeyalo.sonata.profiles.service;
 import com.odeyalo.sonata.profiles.config.mapper.Converters;
 import com.odeyalo.sonata.profiles.entity.UserEntity;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.entity.factory.UserEntityFactory;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.memory.InMemoryUserRepository;
-import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
+import com.odeyalo.sonata.profiles.support.mapper.UserMapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Base class for {@link ProfileService} functionality tests
- */
-public abstract class UserProfileServiceTest {
+public abstract class UserServiceTest {
 
     protected static final class TestableBuilder {
         private final List<UserEntity> predefinedEntities = new ArrayList<>();
 
-        public static TestableBuilder instance() {
-            return new TestableBuilder();
+        public static UserServiceTest.TestableBuilder instance() {
+            return new UserServiceTest.TestableBuilder();
         }
 
-        public TestableBuilder withProfiles(final UserProfile... profiles) {
+        public UserServiceTest.TestableBuilder withProfiles(final UserProfile... profiles) {
 
             final var entities = Arrays.stream(profiles)
-                    .map(TestableBuilder::toUserProfileEntity)
+                    .map(UserServiceTest.TestableBuilder::toUserProfileEntity)
                     .toList();
 
             predefinedEntities.addAll(entities);
@@ -35,14 +33,13 @@ public abstract class UserProfileServiceTest {
             return this;
         }
 
-        public ProfileService build() {
+        public UserService build() {
             final InMemoryUserRepository repository = InMemoryUserRepository.withPredefinedEntities(predefinedEntities);
-            final UserProfileMapper userProfileMapper = new Converters().userProfileMapper();
+            final UserMapper userProfileMapper = new Converters().userMapper();
 
-            return new ProfileService(repository, userProfileMapper);
+            return new UserService(repository, userProfileMapper, new UserEntityFactory());
         }
 
-        // Don't like stuff like this in tests, change it by using Adapter?
         private static @NotNull UserEntity toUserProfileEntity(final UserProfile profile) {
             final UserEntity userEntity = UserEntity.builder()
                     .publicId(profile.getId().value())
