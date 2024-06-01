@@ -3,6 +3,7 @@ package com.odeyalo.sonata.profiles.service;
 import com.odeyalo.sonata.profiles.config.mapper.Converters;
 import com.odeyalo.sonata.profiles.entity.UserEntity;
 import com.odeyalo.sonata.profiles.entity.UserProfileEntity;
+import com.odeyalo.sonata.profiles.entity.factory.UserEntityFactory;
 import com.odeyalo.sonata.profiles.model.UserProfile;
 import com.odeyalo.sonata.profiles.repository.memory.InMemoryUserRepository;
 import com.odeyalo.sonata.profiles.support.mapper.UserMapper;
@@ -36,7 +37,7 @@ public abstract class UserServiceTest {
             final InMemoryUserRepository repository = InMemoryUserRepository.withPredefinedEntities(predefinedEntities);
             final UserMapper userProfileMapper = new Converters().userMapper();
 
-            return new UserService(repository, userProfileMapper);
+            return new UserService(repository, userProfileMapper, new UserEntityFactory());
         }
 
         private static @NotNull UserEntity toUserProfileEntity(final UserProfile profile) {
