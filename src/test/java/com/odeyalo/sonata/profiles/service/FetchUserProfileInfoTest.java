@@ -94,7 +94,7 @@ class FetchUserProfileInfoTest extends UserProfileServiceTest {
 
         testable.getProfileForUser(UserId.fromString("miku"))
                 .as(StepVerifier::create)
-                .assertNext(it -> assertThat(it.getBirthdate()).isEqualTo("2004-05-17"))
+                .assertNext(it -> assertThat(it.getBirthdate().value()).isEqualTo("2004-05-17"))
                 .verifyComplete();
     }
 

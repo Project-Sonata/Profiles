@@ -50,7 +50,7 @@ public abstract class UserServiceTest {
             UserProfileEntity profileEntity = UserProfileEntity.builder()
                     .userInfo(userEntity)
                     .displayName(profile.getDisplayName())
-                    .birthdate(profile.getBirthdate())
+                    .birthdate(profile.getBirthdate().value())
                     .country(profile.getCountry())
                     .gender(profile.getGender())
                     .build();

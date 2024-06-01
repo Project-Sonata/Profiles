@@ -3,6 +3,7 @@ package testing.faker;
 import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.UserProfile;
+import com.odeyalo.sonata.profiles.model.core.Birthdate;
 import com.odeyalo.sonata.profiles.model.core.Email;
 import com.odeyalo.sonata.profiles.model.core.UserId;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -28,7 +29,7 @@ public final class UserProfileFaker {
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
                 .email(Email.of(faker.internet().emailAddress()))
-                .birthdate(birthdate)
+                .birthdate(Birthdate.of(birthdate))
                 .contextUri("sonata:user:" + id)
                 .gender(faker.options().option(Gender.class));
     }
@@ -59,7 +60,7 @@ public final class UserProfileFaker {
     }
 
     public UserProfileFaker withBirthdate(final LocalDate birthdate) {
-        builder.birthdate(birthdate);
+        builder.birthdate(Birthdate.of(birthdate));
         return this;
     }
 

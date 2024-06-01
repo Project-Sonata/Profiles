@@ -11,7 +11,7 @@ import com.odeyalo.sonata.profiles.support.mapper.*;
 public class Converters {
 
     public UserProfileMapper userProfileMapper() {
-        return new UserProfileMapperImpl(new UserIdConverter(), new EmailConverter());
+        return new UserProfileMapperImpl(new UserIdConverter(), new EmailConverter(), new BirthdateConverter());
     }
 
     public UserMapper userMapper() {

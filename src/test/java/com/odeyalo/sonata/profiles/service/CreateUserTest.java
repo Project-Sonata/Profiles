@@ -80,7 +80,7 @@ class CreateUserTest extends UserServiceTest {
         testable.createUser(payload)
                 .as(StepVerifier::create)
                 // then
-                .assertNext(it -> assertThat(it.getProfile().getBirthdate()).isEqualTo("2000-01-25"))
+                .assertNext(it -> assertThat(it.getProfile().getBirthdate().value()).isEqualTo("2000-01-25"))
                 .verifyComplete();
     }
 

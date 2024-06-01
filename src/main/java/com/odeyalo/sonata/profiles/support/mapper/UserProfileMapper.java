@@ -11,7 +11,8 @@ import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
         injectionStrategy = CONSTRUCTOR,
         uses = {
                 UserIdConverter.class,
-                EmailConverter.class
+                EmailConverter.class,
+                BirthdateConverter.class
         })
 public interface UserProfileMapper {
 
