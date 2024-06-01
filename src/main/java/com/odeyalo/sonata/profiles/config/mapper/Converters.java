@@ -1,7 +1,6 @@
 package com.odeyalo.sonata.profiles.config.mapper;
 
-import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
-import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapperImpl;
+import com.odeyalo.sonata.profiles.support.mapper.*;
 
 /**
  * Converters to map POJOs, primary used for unit tests.
@@ -12,6 +11,10 @@ import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapperImpl;
 public class Converters {
 
     public UserProfileMapper userProfileMapper() {
-        return new UserProfileMapperImpl();
+        return new UserProfileMapperImpl(new UserIdConverter(), new EmailConverter(), new BirthdateConverter());
+    }
+
+    public UserMapper userMapper() {
+        return new UserMapperImpl(userProfileMapper());
     }
 }

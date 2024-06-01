@@ -1,14 +1,16 @@
 package com.odeyalo.sonata.profiles.api.rest;
 
 import com.odeyalo.sonata.profiles.api.dto.UserProfileDto;
-import com.odeyalo.sonata.profiles.service.CreateUserInfo;
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import com.odeyalo.sonata.profiles.service.ProfileService;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileDtoMapper;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.net.URI;
 
 @RestController
 @RequestMapping("/users")
@@ -23,20 +25,11 @@ public final class ProfileController {
     }
 
     @GetMapping("/{user_id}")
-    public Mono<ResponseEntity<UserProfileDto>> fetchUserProfileById(@PathVariable("user_id") final String userId) {
+    public Mono<ResponseEntity<UserProfileDto>> fetchUserProfileById(@PathVariable("user_id") final @NotNull UserId userId) {
 
         return profileService.getProfileForUser(userId)
                 .map(userProfileDtoMapper::toUserProfileDto)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.noContent().build());
-    }
-
-    @PostMapping
-    public Mono<ResponseEntity<Void>> createUser(CreateUserInfo createUserInfo) {
-
-        return profileService.createUser(createUserInfo)
-                .map(
-                        it -> ResponseEntity.created(URI.create("/users/" + it.getId())).build()
-                );
     }
 }
