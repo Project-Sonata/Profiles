@@ -1,5 +1,7 @@
 package com.odeyalo.sonata.profiles.config.mapper;
 
+import com.odeyalo.sonata.profiles.support.mapper.UserMapper;
+import com.odeyalo.sonata.profiles.support.mapper.UserMapperImpl;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapper;
 import com.odeyalo.sonata.profiles.support.mapper.UserProfileMapperImpl;
 
@@ -13,5 +15,9 @@ public class Converters {
 
     public UserProfileMapper userProfileMapper() {
         return new UserProfileMapperImpl();
+    }
+
+    public UserMapper userMapper() {
+        return new UserMapperImpl(userProfileMapper());
     }
 }
