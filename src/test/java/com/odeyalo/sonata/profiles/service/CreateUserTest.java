@@ -31,7 +31,7 @@ class CreateUserTest extends UserServiceTest {
         testable.createUser(payload)
                 .as(StepVerifier::create)
                 // then
-                .assertNext(it -> assertThat(it.getProfile().getId()).isEqualTo("miku"))
+                .assertNext(it -> assertThat(it.getProfile().getId()).isEqualTo(UserId.fromString("miku")))
                 .verifyComplete();
     }
 

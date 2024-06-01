@@ -25,7 +25,7 @@ public final class UserController {
 
         return userService.createUser(createUserInfo)
                 .map(
-                        it -> ResponseEntity.created(URI.create("/users/" + it.getProfile().getId())).build()
+                        it -> ResponseEntity.created(URI.create("/users/" + it.getProfile().getId().value())).build()
                 );
     }
 }

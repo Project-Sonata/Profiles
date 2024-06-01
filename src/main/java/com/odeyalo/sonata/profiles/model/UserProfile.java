@@ -1,5 +1,6 @@
 package com.odeyalo.sonata.profiles.model;
 
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import lombok.Builder;
 import lombok.Value;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 public class UserProfile {
     @NotNull
-    String id;
+    UserId id;
     @NotNull
     String displayName;
     @NotNull

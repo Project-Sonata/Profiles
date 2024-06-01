@@ -45,7 +45,7 @@ public abstract class UserProfileServiceTest {
         // Don't like stuff like this in tests, change it by using Adapter?
         private static @NotNull UserEntity toUserProfileEntity(final UserProfile profile) {
             final UserEntity userEntity = UserEntity.builder()
-                    .publicId(profile.getId())
+                    .publicId(profile.getId().value())
                     .contextUri(profile.getContextUri())
                     .email(profile.getEmail())
                     .build();

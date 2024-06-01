@@ -41,7 +41,7 @@ public abstract class UserServiceTest {
 
         private static @NotNull UserEntity toUserProfileEntity(final UserProfile profile) {
             final UserEntity userEntity = UserEntity.builder()
-                    .publicId(profile.getId())
+                    .publicId(profile.getId().value())
                     .contextUri(profile.getContextUri())
                     .email(profile.getEmail())
                     .build();

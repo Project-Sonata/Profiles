@@ -3,6 +3,7 @@ package testing.faker;
 import com.github.javafaker.Faker;
 import com.odeyalo.sonata.profiles.model.Gender;
 import com.odeyalo.sonata.profiles.model.UserProfile;
+import com.odeyalo.sonata.profiles.model.core.UserId;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public final class UserProfileFaker {
         final String id = RandomStringUtils.randomAlphanumeric(22);
 
         builder
-                .id(id)
+                .id(UserId.fromString(id))
                 .displayName(faker.name().username())
                 .country(faker.country().countryCode2())
                 .email(faker.internet().emailAddress())
@@ -36,7 +37,7 @@ public final class UserProfileFaker {
     }
 
     public UserProfileFaker withPublicId(final String publicId) {
-        builder.id(publicId);
+        builder.id(UserId.fromString(publicId));
         builder.contextUri("sonata:user:" + publicId);
         return this;
     }

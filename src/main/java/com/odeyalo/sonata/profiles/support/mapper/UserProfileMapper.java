@@ -5,7 +5,11 @@ import com.odeyalo.sonata.profiles.model.UserProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
+
+@Mapper(componentModel = "spring",
+        injectionStrategy = CONSTRUCTOR,
+        uses = UserIdConverter.class)
 public interface UserProfileMapper {
 
     @Mapping(target = "id", source = "userInfo.publicId")
