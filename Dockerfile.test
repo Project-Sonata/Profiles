@@ -1,0 +1,10 @@
+FROM gradle:8.4.0-jdk17 AS build
+
+COPY . /sonata/profiles
+
+WORKDIR /sonata/profiles
+
+ENV JAVA_DEBUG_PORT=*:5005
+
+CMD ["printenv"]
+CMD ["gradle", "test"]
