@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  sonata-profiles:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: sonata-profiles-microservice-image
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5005:5005"
+    env_file:
+      - test.env
+
+  db:
+    image: 'postgres:15.2'
+    container_name: db_profiles
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
