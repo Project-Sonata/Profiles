@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source sonata-playlists-test-build.sh
+source sonata-profiles-test-build.sh
 
-source sonata-playlists-test-run.sh
+source sonata-profiles-test-run.sh
